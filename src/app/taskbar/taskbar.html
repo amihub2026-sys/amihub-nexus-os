@@ -1,0 +1,59 @@
+<div class="taskbar">
+  <button class="start-btn">◉ Vision</button>
+
+  <div class="search-box">🔍 Search Nexus OS</div>
+
+  <div class="dock">
+
+<button 
+class="dock-icon"
+(click)="openApp('Files')">
+📁
+</button>
+
+
+<button class="dock-icon">
+🌐
+</button>
+
+
+<button class="dock-icon">
+🧮
+</button>
+
+
+<button class="dock-icon">
+⚙️
+</button>
+
+
+<button class="dock-icon">
+💻
+</button>
+
+
+<button class="dock-icon">
+🤖
+</button>
+
+
+<button 
+class="dock-icon music-icon"
+(click)="openApp('Music')">
+🎵
+</button>
+
+
+</div>
+
+  <div class="running-apps">
+    <span *ngFor="let app of openWindows">{{ app.name }}</span>
+  </div>
+
+  <div class="tray">
+    <span>📶</span>
+    <span>🔊</span>
+    <span>🔋</span>
+    <b>{{ time }}</b>
+  </div>
+</div>

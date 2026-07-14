@@ -1,0 +1,159 @@
+<div
+  class="music-window"
+  [style.left.px]="x"
+  [style.top.px]="y"
+>
+
+
+  <!-- HEADER -->
+
+  <div 
+    class="title-bar"
+    (mousedown)="startDrag($event)"
+  >
+
+    <span>
+      🎵 NEXUS MUSIC ENGINE
+    </span>
+
+
+    <button
+    (click)="close()">
+      ✕
+    </button>
+
+  </div>
+
+
+
+  <!-- HOLOGRAM DISC -->
+
+  <div 
+  class="disc"
+  [class.spin]="isPlaying">
+
+    ♪
+
+  </div>
+
+
+
+  <!-- SONG INFO -->
+
+
+  <h3>
+    {{currentSong.title}}
+  </h3>
+
+
+  <p class="artist">
+    {{currentSong.artist}}
+  </p>
+
+
+
+  <!-- PROGRESS -->
+
+
+  <div class="progress-area">
+
+
+    <span>
+      {{formatTime(currentTime)}}
+    </span>
+
+
+
+    <input
+    type="range"
+    min="0"
+    [max]="duration"
+    [value]="currentTime"
+    (input)="seek($event)"
+    >
+
+
+
+    <span>
+      {{formatTime(duration)}}
+    </span>
+
+
+  </div>
+
+
+
+
+  <!-- CONTROLS -->
+
+
+  <div class="controls">
+
+
+    <button>
+      ⏮
+    </button>
+
+
+
+    <button
+    class="play-btn"
+    (click)="togglePlay()">
+
+
+      {{isPlaying ? '⏸' : '▶'}}
+
+
+    </button>
+
+
+
+    <button>
+      ⏭
+    </button>
+
+
+
+  </div>
+
+
+
+
+  <!-- VOLUME -->
+
+
+  <div class="volume">
+
+
+    🔊
+
+
+    <input
+    type="range"
+    min="0"
+    max="100"
+    [value]="volume"
+    (input)="changeVolume($event)"
+    >
+
+
+  </div>
+
+
+
+  <!-- AI STATUS -->
+
+
+  <div class="ai-status">
+
+
+    <span></span>
+
+    NEXUS AI AUDIO LINK ACTIVE
+
+
+  </div>
+
+
+
+</div>

@@ -1,0 +1,58 @@
+<div class="nexus">
+
+<!--
+<app-desktop-icons (appOpen)="openApp($event)"></app-desktop-icons>
+-->
+
+  <app-window-manager
+  *ngIf="openWindows && openWindows.some(w => w.name === 'Files')"
+  title="File Explorer"
+  icon="📁"
+  [zIndex]="openWindows.find(w => w.name === 'Files')?.z || 700"
+  (focusWindow)="focusApp('Files')"
+  (closeWindow)="closeApp('Files')">
+
+  <app-file-explorer></app-file-explorer>
+
+</app-window-manager>
+
+<app-window-manager
+  *ngIf="openWindows && openWindows.some(w => w.name === 'Music')"
+  title="Music Player"
+  icon="🎵"
+  [zIndex]="openWindows.find(w => w.name === 'Music')?.z || 700"
+  (focusWindow)="focusApp('Music')"
+  (closeWindow)="closeApp('Music')">
+
+  <app-music-player></app-music-player>
+
+</app-window-manager>
+
+  <app-live-clock></app-live-clock>
+  <app-notification-panel></app-notification-panel>
+
+  <div class="core-layer">
+    <app-ai-core></app-ai-core>
+  </div>
+
+  <app-system-status></app-system-status>
+
+  <div class="center hologram-container">
+
+  <app-ami-hologram></app-ami-hologram>
+
+</div>
+
+  <app-modules-panel></app-modules-panel>
+
+  <app-assistant-panel
+  (commandSend)="executeVoiceCommand($event)">
+</app-assistant-panel>
+
+
+<app-taskbar
+  [openWindows]="openWindows"
+  (appOpen)="openApp($event)">
+</app-taskbar>
+
+</div>

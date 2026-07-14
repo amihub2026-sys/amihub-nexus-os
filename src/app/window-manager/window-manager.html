@@ -1,0 +1,45 @@
+<div
+  class="os-window"
+  [class.maximized]="isMaximized"
+  [style.left.px]="isMaximized ? null : x"
+  [style.top.px]="isMaximized ? null : y"
+  [style.width.px]="isMaximized ? null : width"
+  [style.height.px]="isMaximized ? null : height"
+  [style.zIndex]="zIndex"
+  (mousedown)="focus()"
+>
+
+  <div class="title-bar" (mousedown)="startDrag($event)">
+
+    <span>{{ icon }} {{ title }}</span>
+
+    <div class="window-actions">
+      <button title="Minimize">−</button>
+
+      <button
+        title="Maximize"
+        (click)="toggleMaximize(); $event.stopPropagation()">
+        □
+      </button>
+
+      <button
+        title="Close"
+        (click)="close(); $event.stopPropagation()">
+        ✕
+      </button>
+    </div>
+
+  </div>
+
+  <div class="holo-scan"></div>
+
+  <div class="window-content">
+    <ng-content></ng-content>
+  </div>
+
+  <div
+    class="resize-handle"
+    (mousedown)="startResize($event)">
+  </div>
+
+</div>

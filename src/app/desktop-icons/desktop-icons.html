@@ -1,0 +1,10 @@
+<div class="desktop-icons">
+  <div
+    class="desktop-icon"
+    *ngFor="let app of apps"
+    (dblclick)="openApp(app)"
+  >
+    <div class="icon">{{ app.icon }}</div>
+    <span>{{ app.name }}</span>
+  </div>
+</div>

@@ -1,0 +1,500 @@
+.music-window {
+
+  position:absolute;
+
+  width:420px;
+
+  padding:24px;
+
+  z-index:600;
+
+
+  border-radius:28px;
+
+
+  background:
+
+  linear-gradient(
+    145deg,
+    rgba(6,10,28,.96),
+    rgba(0,120,180,.18)
+  );
+
+
+  border:
+
+  1px solid rgba(0,230,255,.45);
+
+
+  box-shadow:
+
+  0 0 40px rgba(0,230,255,.35),
+  inset 0 0 30px rgba(0,230,255,.12);
+
+
+  color:white;
+
+
+  text-align:center;
+
+
+  backdrop-filter:blur(18px);
+
+
+}
+
+
+
+/* HEADER */
+
+
+.title-bar {
+
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+
+color:#67e8f9;
+
+
+font-weight:900;
+
+
+letter-spacing:2px;
+
+
+cursor:move;
+
+
+}
+
+
+
+.title-bar button{
+
+
+border:none;
+
+background:none;
+
+
+color:white;
+
+
+font-size:20px;
+
+
+cursor:pointer;
+
+
+}
+
+
+
+
+
+/* MUSIC DISC */
+
+
+.disc {
+
+
+width:180px;
+
+height:180px;
+
+
+margin:30px auto 20px;
+
+
+
+border-radius:50%;
+
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+
+font-size:65px;
+
+
+
+background:
+
+
+radial-gradient(
+
+circle,
+
+#67e8f9,
+
+#0369a1 35%,
+
+#020617 70%
+
+);
+
+
+
+box-shadow:
+
+
+0 0 30px #06b6d4,
+
+0 0 70px rgba(0,230,255,.5);
+
+
+
+}
+
+
+
+.disc.spin{
+
+
+animation:
+
+musicSpin 4s linear infinite;
+
+
+}
+
+
+
+@keyframes musicSpin{
+
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+
+}
+
+
+
+
+
+/* SONG INFO */
+
+
+.music-window h3{
+
+
+margin:10px 0 5px;
+
+
+font-size:22px;
+
+
+color:#67e8f9;
+
+
+}
+
+
+
+.artist{
+
+
+margin:0;
+
+
+color:#cbd5e1;
+
+
+}
+
+
+
+/* PROGRESS */
+
+
+.progress-area{
+
+
+display:flex;
+
+
+align-items:center;
+
+
+gap:10px;
+
+
+margin-top:25px;
+
+
+font-size:12px;
+
+
+color:#94a3b8;
+
+
+}
+
+
+
+.progress-area input{
+
+
+flex:1;
+
+
+accent-color:#06b6d4;
+
+
+}
+
+
+
+
+
+/* BUTTONS */
+
+
+.controls{
+
+
+display:flex;
+
+
+justify-content:center;
+
+
+align-items:center;
+
+
+gap:25px;
+
+
+margin:25px 0;
+
+
+}
+
+
+
+.controls button{
+
+
+width:45px;
+
+height:45px;
+
+
+border-radius:50%;
+
+
+border:
+
+1px solid rgba(0,230,255,.4);
+
+
+background:
+
+rgba(0,230,255,.12);
+
+
+color:white;
+
+
+font-size:20px;
+
+
+cursor:pointer;
+
+
+}
+
+
+
+.controls button:hover{
+
+
+box-shadow:
+
+0 0 25px cyan;
+
+
+transform:scale(1.1);
+
+
+}
+
+
+
+.controls .play-btn{
+
+
+width:65px;
+
+height:65px;
+
+
+background:
+
+linear-gradient(
+135deg,
+#22d3ee,
+#0284c7
+);
+
+
+color:#001018;
+
+
+font-weight:900;
+
+
+}
+
+
+
+
+
+/* VOLUME */
+
+
+.volume{
+
+
+display:flex;
+
+
+align-items:center;
+
+
+gap:12px;
+
+
+margin-top:15px;
+
+
+}
+
+
+
+.volume input{
+
+
+flex:1;
+
+
+accent-color:#22d3ee;
+
+
+}
+
+
+
+
+/* AI STATUS */
+
+
+.ai-status{
+
+
+margin-top:25px;
+
+
+padding:12px;
+
+
+border-radius:16px;
+
+
+background:
+
+rgba(0,255,255,.08);
+
+
+border:
+
+1px solid rgba(0,255,255,.3);
+
+
+color:#67e8f9;
+
+
+font-size:12px;
+
+
+letter-spacing:1px;
+
+
+display:flex;
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+gap:10px;
+
+
+}
+
+
+
+.ai-status span{
+
+
+width:10px;
+
+height:10px;
+
+
+border-radius:50%;
+
+
+background:#22ff88;
+
+
+box-shadow:
+
+0 0 15px #22ff88;
+
+
+animation:
+
+statusPulse 1.5s infinite;
+
+
+}
+
+
+
+@keyframes statusPulse{
+
+
+50%{
+
+opacity:.3;
+
+transform:scale(1.5);
+
+}
+
+
+}

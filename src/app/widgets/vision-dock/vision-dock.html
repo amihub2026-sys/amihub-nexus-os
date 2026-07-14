@@ -1,0 +1,14 @@
+<div class="vision-dock" [class.listening]="isListening">
+  <button class="mic-orb" (click)="activateVoice()">
+    🎤
+  </button>
+
+  <div class="vision-info">
+    <h3>{{ isListening ? 'LISTENING...' : 'VISION AI READY' }}</h3>
+    <p>{{ voiceReply }}</p>
+
+    <div class="wave">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+</div>

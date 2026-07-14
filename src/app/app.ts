@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BootScreenComponent } from './boot-screen/boot-screen.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  imports: [CommonModule, BootScreenComponent],
+  template: `<app-boot-screen></app-boot-screen>`,
+  styleUrls: ['./app.css']
 })
-export class App {
-  protected readonly title = signal('amihub-nexus-os');
-}
+export class AppComponent {}

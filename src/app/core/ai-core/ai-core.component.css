@@ -1,0 +1,119 @@
+.ai-core-shell {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 0 40px rgba(0, 245, 255, 0.7));
+  animation: coreBreath 4s ease-in-out infinite;
+}
+
+.core-sphere {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #e0ffff 0%, #00f5ff 12%, #0077ff 35%, #020617 72%);
+  box-shadow:
+    0 0 35px #00f5ff,
+    0 0 80px rgba(0, 191, 255, 0.8),
+    inset 0 0 45px rgba(0, 245, 255, 0.7);
+  position: relative;
+  animation: spherePulse 2.5s ease-in-out infinite, rotateCore 12s linear infinite;
+}
+
+.core-glow {
+  position: absolute;
+  inset: -35px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 245, 255, 0.4), transparent 65%);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.energy-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 245, 255, 0.65);
+  box-shadow: 0 0 25px rgba(0, 245, 255, 0.9);
+}
+
+.ring-one {
+  width: 230px;
+  height: 230px;
+  transform: rotateX(70deg);
+  animation: ringRotateOne 5s linear infinite;
+}
+
+.ring-two {
+  width: 270px;
+  height: 270px;
+  transform: rotateY(65deg);
+  animation: ringRotateTwo 7s linear infinite reverse;
+}
+
+.ring-three {
+  width: 310px;
+  height: 310px;
+  border-color: rgba(103, 232, 249, 0.35);
+  transform: rotateX(55deg) rotateY(25deg);
+  animation: ringRotateThree 9s linear infinite;
+}
+
+.particle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #67e8f9;
+  border-radius: 50%;
+  box-shadow: 0 0 18px #00f5ff;
+}
+
+.p1 { top: 20px; left: 150px; animation: particleMove 3s infinite; }
+.p2 { top: 120px; left: 20px; animation: particleMove 4s infinite; }
+.p3 { bottom: 40px; right: 50px; animation: particleMove 3.5s infinite; }
+.p4 { top: 80px; right: 20px; animation: particleMove 5s infinite; }
+.p5 { bottom: 20px; left: 100px; animation: particleMove 4.5s infinite; }
+
+@keyframes spherePulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes coreBreath {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.04); }
+}
+
+@keyframes rotateCore {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+@keyframes ringRotateOne {
+  from { transform: rotateX(70deg) rotateZ(0deg); }
+  to { transform: rotateX(70deg) rotateZ(360deg); }
+}
+
+@keyframes ringRotateTwo {
+  from { transform: rotateY(65deg) rotateZ(0deg); }
+  to { transform: rotateY(65deg) rotateZ(360deg); }
+}
+
+@keyframes ringRotateThree {
+  from { transform: rotateX(55deg) rotateY(25deg) rotateZ(0deg); }
+  to { transform: rotateX(55deg) rotateY(25deg) rotateZ(360deg); }
+}
+
+@keyframes particleMove {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  50% { transform: translate(20px, -25px) scale(1.6); opacity: 1; }
+}

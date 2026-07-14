@@ -1,0 +1,70 @@
+.panel{
+
+     width:320px;
+    padding:22px;
+
+    border-radius:20px;
+
+    background:#090b14;
+
+    border:1px solid #11d7ff88;
+
+    box-shadow:0 0 20px #00d9ff33;
+
+}
+
+h3{
+
+    color:white;
+
+    font-size:28px;
+
+    margin-bottom:18px;
+
+}
+
+.module-item{
+
+    display:flex;
+
+    align-items:center;
+
+    margin:12px 0;
+
+    color:#2ad7ff;
+
+    font-size:20px;
+
+}
+
+.dot{
+
+    width:12px;
+
+    height:12px;
+
+    background:#49f0ff;
+
+    border-radius:50%;
+
+    margin-right:16px;
+
+    box-shadow:0 0 15px #49f0ff;
+
+}
+
+.name{
+
+    flex:1;
+
+}
+
+b{
+
+    color:#73f6ff;
+
+}
+
+b{
+    font-size:18px;
+}

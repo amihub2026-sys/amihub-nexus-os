@@ -1,0 +1,58 @@
+.notification-wrap {
+  position: absolute;
+  top: 130px;
+  right: 45px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notice {
+  width: 280px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(6, 10, 28, 0.88);
+  border: 1px solid rgba(0, 230, 255, 0.35);
+  box-shadow: 0 0 20px rgba(0, 230, 255, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.45s ease;
+}
+
+.notice span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #67e8f9;
+  box-shadow: 0 0 14px #67e8f9;
+}
+
+.notice p {
+  margin: 0;
+  color: #dffbff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.notice.success span {
+  background: #22c55e;
+  box-shadow: 0 0 14px #22c55e;
+}
+
+.notice.warning span {
+  background: #facc15;
+  box-shadow: 0 0 14px #facc15;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

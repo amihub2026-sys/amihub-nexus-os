@@ -1,0 +1,12 @@
+<div class="notification-wrap">
+  <div
+    class="notice"
+    *ngFor="let item of notifications"
+    [class.success]="item.type === 'success'"
+    [class.info]="item.type === 'info'"
+    [class.warning]="item.type === 'warning'"
+  >
+    <span></span>
+    <p>{{ item.message }}</p>
+  </div>
+</div>

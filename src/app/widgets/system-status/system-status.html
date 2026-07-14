@@ -1,0 +1,37 @@
+<div class="panel left">
+  <h3>SYSTEM STATUS</h3>
+
+  <div class="status-row">
+    <span>AI CORE</span>
+    <b>ONLINE</b>
+  </div>
+  <div class="meter"><span style="width: 92%"></span></div>
+
+  <div class="status-row">
+    <span>CPU</span>
+    <b>{{ cpu }}%</b>
+  </div>
+  <div class="meter"><span [style.width.%]="cpu"></span></div>
+
+  <div class="status-row">
+    <span>RAM</span>
+    <b>{{ ram }}%</b>
+  </div>
+  <div class="meter"><span [style.width.%]="ram"></span></div>
+
+  <div class="status-row">
+    <span>GPU</span>
+    <b>{{ gpu }}%</b>
+  </div>
+  <div class="meter"><span [style.width.%]="gpu"></span></div>
+
+  <div class="status-row">
+    <span>TEMP</span>
+    <b>{{ temp }}°C</b>
+  </div>
+
+  <div class="status-row">
+    <span>NETWORK</span>
+    <b>{{ network }} Mbps</b>
+  </div>
+</div>

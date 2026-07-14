@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+.nexus {
+  display: flex;
+  justify-content: space-between;
+  background: radial-gradient(circle, #020617, #000);
+  color: #06b6d4;
+  height: 100vh;
+  padding: 20px;
+}
+
+.panel {
+  width: 200px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid #06b6d4;
+  padding: 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.logs {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  font-size: 12px;
+  color: white;
+}

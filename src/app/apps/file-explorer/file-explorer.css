@@ -1,0 +1,23 @@
+.folders{
+    width:100%;
+}
+.folders {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.folder {
+  background: rgba(15, 35, 56, 0.95);
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #8ef7ff;
+  transition: 0.3s;
+}
+
+.folder:hover {
+  background: #133455;
+  transform: translateY(-4px);
+}
