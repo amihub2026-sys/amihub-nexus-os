@@ -1,6 +1,6 @@
 .assistant-panel {
   position: fixed;
-  bottom: 20px;
+  bottom: 90px;
   left: 20px;
   width: 360px;
   background: rgba(6,10,28,0.95);
@@ -14,7 +14,7 @@
   overflow: hidden;
   transition: width 0.3s, height 0.3s;
   user-select: none;
-  z-index: 1000;
+   z-index:99999 !important;
 }
 
 .assistant-panel.collapsed {
@@ -174,4 +174,39 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.wake-status{
+
+margin:10px;
+
+padding:10px;
+
+text-align:center;
+
+color:#00ffff;
+
+font-weight:bold;
+
+border:1px solid #00ffff55;
+
+border-radius:10px;
+
+box-shadow:
+0 0 15px cyan;
+
+animation:nexusPulse 1.2s infinite;
+
+}
+
+
+
+@keyframes nexusPulse{
+
+50%{
+
+opacity:.4;
+
+}
+
 }

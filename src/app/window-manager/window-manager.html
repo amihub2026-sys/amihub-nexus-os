@@ -1,45 +1,80 @@
-<div
-  class="os-window"
-  [class.maximized]="isMaximized"
-  [style.left.px]="isMaximized ? null : x"
-  [style.top.px]="isMaximized ? null : y"
-  [style.width.px]="isMaximized ? null : width"
-  [style.height.px]="isMaximized ? null : height"
+<div 
+  class="window"
+
+  [class.active-window]="active"
+
+  [class.minimized]="isMinimized"
+
+  [class.closing]="isClosing"
+
+  [style.left.px]="x"
+
+  [style.top.px]="y"
+
+  [style.width.px]="width"
+
+  [style.height.px]="height"
+
   [style.zIndex]="zIndex"
+
   (mousedown)="focus()"
 >
 
-  <div class="title-bar" (mousedown)="startDrag($event)">
+  <!-- Window title bar -->
+  <div 
+class="title-bar"
+(mousedown)="startDrag($event)"
+(dblclick)="toggleMaximize()">
 
-    <span>{{ icon }} {{ title }}</span>
 
-    <div class="window-actions">
-      <button title="Minimize">−</button>
+<span class="window-icon">
+{{icon}}
+</span>
 
-      <button
-        title="Maximize"
-        (click)="toggleMaximize(); $event.stopPropagation()">
-        □
-      </button>
 
-      <button
-        title="Close"
-        (click)="close(); $event.stopPropagation()">
-        ✕
-      </button>
-    </div>
+<span class="window-title">
+{{title}}
+</span>
 
-  </div>
 
-  <div class="holo-scan"></div>
+<div 
+class="window-controls"
+(mousedown)="$event.stopPropagation()">
 
+
+<button
+class="minimize-btn"
+(click)="toggleMinimize(); $event.stopPropagation()">
+—
+</button>
+
+
+<button
+class="maximize-btn"
+(click)="toggleMaximize(); $event.stopPropagation()">
+{{ isMaximized ? '🗗' : '🗖' }}
+</button>
+
+
+<button
+class="close-btn"
+(click)="close(); $event.stopPropagation()">
+✕
+</button>
+
+
+</div>
+
+
+</div>
+
+  <!-- Window content -->
   <div class="window-content">
-    <ng-content></ng-content>
-  </div>
 
-  <div
-    class="resize-handle"
-    (mousedown)="startResize($event)">
-  </div>
+<ng-content></ng-content>
 
+</div>
+
+  <!-- Resize handle -->
+  <div class="resize-handle" (mousedown)="startResize($event)"></div>
 </div>

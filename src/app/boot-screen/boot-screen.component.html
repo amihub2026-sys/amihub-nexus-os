@@ -1,21 +1,53 @@
-<div class="boot-wrapper">
+<div 
+class="boot-screen"
+[class.fade-out]="isClosing">
 
-  <div class="boot-sequence" *ngIf="!bootComplete">
-    <h4>AMI HUB</h4>
-    <h1>NEXUS OS</h1>
-    <p>Initializing Neural Core...</p>
 
-    <div class="progress-box">
-      <div class="progress-fill" [style.width.%]="progress"></div>
-    </div>
+<div class="core-orb"></div>
 
-    <span class="percent">{{ progress }}%</span>
 
-    <div class="boot-logs">
-      <div *ngFor="let item of visibleLogs">✓ {{ item }}</div>
-    </div>
-  </div>
+<h1>
+AMI NEXUS OS
+</h1>
 
-  <app-desktop *ngIf="bootComplete"></app-desktop>
+
+
+<div class="progress-container">
+
+<div class="progress-bar">
+
+<div 
+class="progress-fill"
+[style.width.%]="progress">
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="logs">
+
+<div 
+class="log-item"
+*ngFor="let item of logs">
+
+> {{item}}
+
+</div>
+
+</div>
+
+
+
+<div class="progress-percent">
+
+{{progress}}%
+
+</div>
+
+
 
 </div>

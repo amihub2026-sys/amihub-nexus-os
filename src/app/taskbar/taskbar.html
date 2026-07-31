@@ -1,44 +1,88 @@
 <div class="taskbar">
-  <button class="start-btn">◉ Vision</button>
 
+  <!-- START BUTTON -->
+  <button class="start-btn" (click)="toggleMenu()">◉ Vision</button>
+
+  <!-- START MENU -->
+  <div class="start-menu" *ngIf="menuOpen">
+    <div class="start-app" *ngFor="let app of apps" (click)="openApp(app.name)">
+      <span>{{ app.icon }}</span>
+      <label>{{ app.name }}</label>
+    </div>
+  </div>
+
+  <!-- SEARCH BOX -->
   <div class="search-box">🔍 Search Nexus OS</div>
 
-  <div class="dock">
+  <!-- DOCK ICONS -->
+ <!-- DOCK ICONS -->
+<div class="dock">
 
-<button 
+
+<button
 class="dock-icon"
+[class.booting]="getModuleStatus('Files')==='BOOTING'"
+[class.online]="getModuleStatus('Files')==='ONLINE'"
 (click)="openApp('Files')">
 📁
 </button>
 
 
-<button class="dock-icon">
+
+<button
+class="dock-icon"
+[class.booting]="getModuleStatus('Web Engine')==='BOOTING'"
+[class.online]="getModuleStatus('Web Engine')==='ONLINE'"
+(click)="openApp('Web Engine')">
 🌐
 </button>
 
 
-<button class="dock-icon">
-🧮
+
+<button
+class="dock-icon"
+[class.booting]="getModuleStatus('AI Engine')==='BOOTING'"
+[class.online]="getModuleStatus('AI Engine')==='ONLINE'"
+(click)="openApp('AI Engine')">
+🧠
 </button>
 
 
-<button class="dock-icon">
-⚙️
+
+<button
+class="dock-icon"
+[class.booting]="getModuleStatus('App Engine')==='BOOTING'"
+[class.online]="getModuleStatus('App Engine')==='ONLINE'"
+(click)="openApp('App Engine')">
+📦
 </button>
 
 
-<button class="dock-icon">
-💻
+
+<button
+class="dock-icon"
+[class.booting]="getModuleStatus('Cloud Sync')==='BOOTING'"
+[class.online]="getModuleStatus('Cloud Sync')==='ONLINE'"
+(click)="openApp('Cloud Sync')">
+☁️
 </button>
 
 
-<button class="dock-icon">
-🤖
+
+<button
+class="dock-icon"
+[class.booting]="getModuleStatus('Camera Vision')==='BOOTING'"
+[class.online]="getModuleStatus('Camera Vision')==='ONLINE'"
+(click)="openApp('Camera Vision')">
+👁️
 </button>
 
 
-<button 
+
+<button
 class="dock-icon music-icon"
+[class.booting]="getModuleStatus('Music')==='BOOTING'"
+[class.online]="getModuleStatus('Music')==='ONLINE'"
 (click)="openApp('Music')">
 🎵
 </button>
@@ -46,14 +90,25 @@ class="dock-icon music-icon"
 
 </div>
 
+  <!-- RUNNING APPS -->
   <div class="running-apps">
-    <span *ngFor="let app of openWindows">{{ app.name }}</span>
+    <button class="running-btn" *ngFor="let app of openWindows" 
+            [class.active]="activeApp === app.name"
+            (click)="focusApp(app.name)">
+      {{ app.name }}
+    </button>
   </div>
 
-  <div class="tray">
-    <span>📶</span>
-    <span>🔊</span>
-    <span>🔋</span>
-    <b>{{ time }}</b>
-  </div>
+
+<!-- SYSTEM TRAY -->
+<div class="tray">
+
+<span>📶</span>
+
+<span>🔊</span>
+
+<span>🔋</span>
+
+<b>{{ time }}</b>
+
 </div>

@@ -5,12 +5,12 @@
   transform: translateX(-50%);
   width: 88%;
   height: 64px;
-  z-index: 200;
+  z-index: 500;
   padding: 0 18px;
   border-radius: 22px;
-  background: rgba(6, 10, 28, 0.88);
-  border: 1px solid rgba(0, 230, 255, 0.35);
-  box-shadow: 0 0 28px rgba(0, 230, 255, 0.18);
+  background: rgba(6,10,28,0.88);
+  border: 1px solid rgba(0,230,255,0.35);
+  box-shadow: 0 0 28px rgba(0,230,255,0.18);
   backdrop-filter: blur(18px);
   display: flex;
   align-items: center;
@@ -21,11 +21,40 @@
   height: 42px;
   padding: 0 18px;
   border-radius: 18px;
-  border: 1px solid rgba(0, 230, 255, 0.35);
-  background: rgba(0, 230, 255, 0.12);
+  border: 1px solid rgba(0,230,255,0.35);
+  background: rgba(0,230,255,0.12);
   color: #67e8f9;
   font-weight: 800;
   cursor: pointer;
+}
+
+.start-menu {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  width: 260px;
+  padding: 15px;
+  background: rgba(5,15,35,.95);
+  border: 1px solid #00eaff;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0,234,255,.4);
+  display: grid;
+  gap: 10px;
+}
+
+.start-app {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.start-app:hover {
+  background: rgba(0,234,255,.15);
+  color: #00eaff;
 }
 
 .search-box {
@@ -37,7 +66,7 @@
   align-items: center;
   color: #dffbff;
   background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(0, 230, 255, 0.25);
+  border: 1px solid rgba(0,230,255,0.25);
 }
 
 .dock {
@@ -47,20 +76,38 @@
   gap: 12px;
 }
 
-.dock button {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
-  border: 1px solid rgba(0, 230, 255, 0.25);
-  background: rgba(255,255,255,0.06);
+.dock-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 18px;
+  background: rgba(0,230,255,.08);
+  border: 1px solid rgba(0,230,255,.35);
+  color: white;
+  font-size: 22px;
   cursor: pointer;
-  font-size: 20px;
-  transition: 0.25s;
+  transition: .3s;
+  box-shadow: 0 0 15px rgba(0,230,255,.15);
 }
 
-.dock button:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 0 20px rgba(0, 230, 255, 0.35);
+.dock-icon:hover {
+  transform: translateY(-8px) scale(1.1);
+  box-shadow: 0 0 30px cyan;
+  background: rgba(0,230,255,.2);
+}
+
+.dock-icon.booting {
+  animation: bootGlow 1.2s infinite;
+}
+
+@keyframes bootGlow {
+  0%, 100% { box-shadow: 0 0 15px #ffd700; transform: scale(1); }
+  50% { box-shadow: 0 0 40px #ffd700; transform: scale(1.1); }
+}
+
+.running-btn.active {
+  border: 1px solid #00eaff;
+  box-shadow: 0 0 15px #00eaff;
+  color: #00eaff;
 }
 
 .tray {
@@ -73,87 +120,141 @@
 .tray b {
   color: white;
 }
-.dock-icon{
 
-width:50px;
-height:50px;
+.dock-icon.booting {
+  animation: bootGlow 1.5s infinite;
+  box-shadow: 0 0 20px #facc15, 0 0 40px #facc15;
+}
 
-border-radius:18px;
+@keyframes bootGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
 
+/* ONLINE MODULE GLOW */
 
-background:
+.dock-icon.online{
 
-rgba(0,230,255,.08);
-
-
-border:
-
-1px solid rgba(0,230,255,.35);
-
-
-color:white;
-
-
-font-size:22px;
-
-
-cursor:pointer;
-
-
-transition:.3s;
-
+border-color:#00ffcc;
 
 box-shadow:
-
-0 0 15px rgba(0,230,255,.15);
-
+0 0 15px #00ffcc,
+0 0 35px #00ffcc;
 
 }
 
 
-.dock-icon:hover{
+/* BOOTING MODULE */
+
+.dock-icon.booting{
+
+animation:bootPulse 1s infinite;
+
+border-color:#facc15;
+
+}
 
 
-transform:translateY(-8px)
-scale(1.1);
+@keyframes bootPulse{
 
+
+0%,100%{
 
 box-shadow:
-
-0 0 30px cyan;
-
-
-background:
-
-rgba(0,230,255,.2);
-
+0 0 15px #facc15;
 
 }
-
-
-
-.music-icon{
-
-
-animation:
-
-musicGlow 2s infinite;
-
-
-}
-
-
-
-@keyframes musicGlow{
 
 
 50%{
 
 box-shadow:
+0 0 45px #facc15;
 
-0 0 35px #00ffff;
+transform:scale(1.12);
 
 }
 
+
+}
+
+.task-icon{
+
+position:relative;
+
+}
+
+
+.task-icon.running::after{
+
+
+content:'';
+
+position:absolute;
+
+bottom:-5px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+
+width:6px;
+
+height:6px;
+
+background:#00ff88;
+
+border-radius:50%;
+
+box-shadow:
+0 0 10px #00ff88;
+
+}
+
+
+
+.task-icon.active{
+
+
+background:
+rgba(0,255,255,.25);
+
+
+box-shadow:
+0 0 25px cyan;
+
+}
+
+.running-btn{
+
+background:
+rgba(0,230,255,.08);
+
+border:
+
+1px solid #00eaff;
+
+color:white;
+
+padding:8px 14px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.running-btn.active{
+
+background:
+rgba(0,255,255,.25);
+
+box-shadow:
+
+0 0 20px cyan;
 
 }

@@ -1,19 +1,73 @@
-<div class="panel">
+<div class="modules-panel">
 
-  <h3>MODULES</h3>
+<h2>MODULES</h2>
 
-  <div class="module-item" *ngFor="let item of modules">
 
-      <span class="dot"></span>
+<div
+class="module-item"
 
-      <span class="name">
-        {{item.name}}
-      </span>
+*ngFor="let module of modules"
 
-      <b>
-        {{item.status}}
-      </b>
+[class.booting]="module.status === 'BOOTING'"
 
-  </div>
+[class.online]="module.status === 'ONLINE'"
+
+>
+
+
+<div class="module-left">
+
+
+<span
+class="dot"
+
+[class.booting]="module.status === 'BOOTING'"
+
+[class.online]="module.status === 'ONLINE'"
+
+></span>
+
+
+<span>
+{{module.name}}
+</span>
+
+
+</div>
+
+
+
+<div class="module-status">
+
+
+<span *ngIf="module.status==='OFFLINE'">
+OFFLINE
+</span>
+
+
+<span 
+*ngIf="module.status==='BOOTING'"
+class="booting-text">
+
+BOOTING
+
+</span>
+
+
+
+<span 
+*ngIf="module.status==='ONLINE'"
+class="online-text">
+
+ONLINE
+
+</span>
+
+
+</div>
+
+
+</div>
+
 
 </div>

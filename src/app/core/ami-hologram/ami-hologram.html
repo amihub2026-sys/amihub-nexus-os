@@ -1,83 +1,32 @@
-<div class="holo-system">
+<div 
+class="holo-system"
+[class.online]="online">
+  <!-- AI Core -->
+ <!-- AI Core Label -->
+<div class="ami-center">
+    <h2>AI CORE</h2>
+</div>
 
+  <!-- Connection Lines -->
+<div class="line line-1"></div>
+<div class="line line-2"></div>
+<div class="line line-3"></div>
+<div class="line line-4"></div>
+<div class="line line-5"></div>
+<div class="line line-6"></div>
+<div class="line line-7"></div>
+<div class="line line-8"></div>
 
-  <!-- RADAR CIRCLE -->
-  <div class="radar-ring"></div>
+  <!-- Modules -->
+  <div class="module-card card-1" (click)="launch('Web Engine')">🌐<span>WEB ENGINE</span></div>
+  <div class="module-card card-2" (click)="launch('App Engine')">📦<span>APP ENGINE</span></div>
+  <div class="module-card card-3" (click)="launch('AI Engine')">🧠<span>AI ENGINE</span></div>
+  <div class="module-card card-4" (click)="launch('Cloud Sync')">☁️<span>CLOUD SYNC</span></div>
+  <div class="module-card card-5" (click)="launch('Voice AI')">🎤<span>VOICE AI</span></div>
+  <div class="module-card card-6" (click)="launch('Camera Vision')">👁️<span>CAMERA VISION</span></div>
+  <div class="module-card card-7" (click)="launch('Neural Network')">🧬<span>NEURAL NETWORK</span></div>
+  <div class="module-card card-8" (click)="launch('Data Core')">💾<span>DATA CORE</span></div>
 
-
-  <!-- MODULE ICONS -->
-
-  <div class="module-card card-1">
-    🌐
-    <span>WEB ENGINE</span>
-  </div>
-
-
-  <div class="module-card card-2">
-    📦
-    <span>APP ENGINE</span>
-  </div>
-
-
-  <div class="module-card card-3">
-    🧠
-    <span>AI ENGINE</span>
-  </div>
-
-
-  <div class="module-card card-4">
-    ☁️
-    <span>CLOUD SYNC</span>
-  </div>
-
-
-  <div class="module-card card-5">
-    🎤
-    <span>VOICE AI</span>
-  </div>
-
-
-  <div class="module-card card-6">
-    👁️
-    <span>CAMERA VISION</span>
-  </div>
-
-
-  <div class="module-card card-7">
-    🧬
-    <span>NEURAL NETWORK</span>
-  </div>
-
-
-  <div class="module-card card-8">
-    💾
-    <span>DATA CORE</span>
-  </div>
-
-
-
-  <!-- CENTER LOGO -->
-
-
-  <div class="ami-center">
-
-
-    <img 
-src="/ami-logo copy 2.png"
-class="ami-logo">
-
-
-  </div>
-
-
-
-  <!-- HOLOGRAM FLOOR -->
-
-  <div class="holo-floor">
-    <div class="laser-beam"></div>
-
-  </div>
-
-<div class="holo-beam"></div>
-
+  <!-- Floor effect -->
+  <div class="holo-floor"></div>
 </div>
