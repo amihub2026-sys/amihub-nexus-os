@@ -1,58 +1,131 @@
 <div class="nexus">
+<div 
+class="system-boot" 
+*ngIf="systemBoot">
 
-<!--
-<app-desktop-icons (appOpen)="openApp($event)"></app-desktop-icons>
--->
 
-  <app-window-manager
-  *ngIf="openWindows && openWindows.some(w => w.name === 'Files')"
-  title="File Explorer"
-  icon="📁"
-  [zIndex]="openWindows.find(w => w.name === 'Files')?.z || 700"
-  (focusWindow)="focusApp('Files')"
-  (closeWindow)="closeApp('Files')">
+<h1>NEXUS OS</h1>
 
-  <app-file-explorer></app-file-explorer>
+<h3>SYSTEM INITIALIZATION</h3>
 
-</app-window-manager>
 
-<app-window-manager
-  *ngIf="openWindows && openWindows.some(w => w.name === 'Music')"
-  title="Music Player"
-  icon="🎵"
-  [zIndex]="openWindows.find(w => w.name === 'Music')?.z || 700"
-  (focusWindow)="focusApp('Music')"
-  (closeWindow)="closeApp('Music')">
+<div 
+class="boot-line"
+*ngFor="let log of systemLogs">
 
-  <app-music-player></app-music-player>
-
-</app-window-manager>
-
-  <app-live-clock></app-live-clock>
-  <app-notification-panel></app-notification-panel>
-
-  <div class="core-layer">
-    <app-ai-core></app-ai-core>
-  </div>
-
-  <app-system-status></app-system-status>
-
-  <div class="center hologram-container">
-
-  <app-ami-hologram></app-ami-hologram>
+✓ {{log}}
 
 </div>
 
+
+</div>
+  <!-- Ami Hologram -->
+  <div class="center hologram-container">
+    <app-ami-hologram
+
+[online]="!systemBoot"
+
+(openApp)="openHoloApp($event)"
+
+>
+</app-ami-hologram>
+  </div>
+
+  <!-- Module Boot Screen -->
+   <app-module-boot
+
+*ngIf="bootingModule"
+
+[moduleName]="bootingModule"
+
+(bootComplete)="onBootComplete()"
+
+>
+</app-module-boot>
+
+  <!-- All Windows -->
+  <!-- WINDOWS -->
+
+<app-window-manager
+
+*ngFor="let win of openWindows"
+
+[hidden]="win.minimized"
+
+[title]="win.name"
+
+[icon]="getIcon(win.name)"
+
+[zIndex]="win.z"
+
+
+(focusWindow)="focusApp(win.name)"
+
+
+(closeWindow)="closeApp(win.name)"
+
+
+(minimizeWindow)="minimizeApp(win.name)"
+
+>
+
+
+<ng-container [ngSwitch]="win.name">
+
+
+<app-file-explorer *ngSwitchCase="'Files'"></app-file-explorer>
+
+<app-music-player *ngSwitchCase="'Music'"></app-music-player>
+
+<app-data-core *ngSwitchCase="'Data Core'"></app-data-core>
+
+<app-ai-engine *ngSwitchCase="'AI Engine'"></app-ai-engine>
+
+<app-web-engine *ngSwitchCase="'Web Engine'"></app-web-engine>
+
+<app-app-engine *ngSwitchCase="'App Engine'"></app-app-engine>
+
+<app-cloud-sync *ngSwitchCase="'Cloud Sync'"></app-cloud-sync>
+
+<app-camera-vision *ngSwitchCase="'Camera Vision'"></app-camera-vision>
+
+<app-neural-network *ngSwitchCase="'Neural Network'"></app-neural-network>
+
+
+</ng-container>
+
+
+</app-window-manager>
+
+  <!-- SYSTEM UI -->
+  <app-live-clock></app-live-clock>
+  <app-notification-panel></app-notification-panel>
+  <div class="core-layer"><app-ai-core></app-ai-core></div>
+  <app-system-status></app-system-status>
+
+  <!-- MODULES PANEL -->
   <app-modules-panel></app-modules-panel>
 
-  <app-assistant-panel
-  (commandSend)="executeVoiceCommand($event)">
-</app-assistant-panel>
+  <!-- ALWAYS AVAILABLE AI ASSISTANT -->
+  <app-assistant-panel (commandSend)="executeVoiceCommand($event)"></app-assistant-panel>
 
+  <!-- TASKBAR -->
+<!-- TASKBAR -->
 
 <app-taskbar
-  [openWindows]="openWindows"
-  (appOpen)="openApp($event)">
-</app-taskbar>
 
+[openWindows]="openWindows"
+
+[activeApp]="activeApp"
+
+[bootingModule]="bootingModule"
+
+(appOpen)="openHoloApp($event)"
+
+(appFocus)="focusApp($event)"
+
+(appRestore)="focusApp($event)"
+
+>
+</app-taskbar>
 </div>

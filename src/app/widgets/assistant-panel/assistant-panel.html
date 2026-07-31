@@ -1,37 +1,132 @@
-<div class="assistant-panel" [class.collapsed]="isCollapsed" (click)="isCollapsed && toggleCollapse()">
+<div class="assistant-panel" 
+[class.collapsed]="isCollapsed" 
+(click)="isCollapsed && toggleCollapse()">
+
+
   <div class="assistant-head">
+
     <span class="ai-dot"></span>
+
     <div>
       <h3>NEXUS AI</h3>
       <p>Assistant Core Online</p>
     </div>
-    <button class="collapse-btn" (click)="toggleCollapse(); $event.stopPropagation()">
+
+
+    <button 
+    class="collapse-btn" 
+    (click)="toggleCollapse(); $event.stopPropagation()">
+
       {{ isCollapsed ? '▲' : '▼' }}
+
     </button>
+
   </div>
+
+
 
   <div *ngIf="!isCollapsed">
-    <div class="chat-body" #chatBody>
-      <div class="bubble" *ngFor="let msg of messages" [class.user]="msg.from === 'user'">
-        {{ msg.text }}
-        <span class="msg-time">{{ msg.time }}</span>
-      </div>
+
+
+
+    <!-- ADD THIS HERE -->
+
+    <div 
+    class="wake-status"
+    *ngIf="wakeMode">
+
+      🎤 NEXUS LISTENING
+
     </div>
 
-    <div class="vision-control" [class.listening]="isListening">
-      <button class="mic-orb" (click)="startVoice()">🎤</button>
-      <div class="vision-info">
-        <h4>VISION AI READY</h4>
-        <p>{{ isListening ? 'Listening...' : 'Type command or click mic' }}</p>
-        <div class="wave">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
+
+
+    <div class="chat-body" #chatBody>
+
+      <div 
+      class="bubble" 
+      *ngFor="let msg of messages" 
+      [class.user]="msg.from === 'user'">
+
+        {{ msg.text }}
+
+        <span class="msg-time">
+          {{ msg.time }}
+        </span>
+
       </div>
+
     </div>
+
+
+
+    <div 
+    class="vision-control" 
+    [class.listening]="isListening">
+
+
+      <button 
+      class="mic-orb" 
+      (click)="startVoice()">
+
+        🎤
+
+      </button>
+
+
+      <div class="vision-info">
+
+        <h4>
+          VISION AI READY
+        </h4>
+
+
+        <p>
+          {{ isListening ? 'Listening...' : 'Type command or click mic' }}
+        </p>
+
+
+        <div class="wave">
+
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
 
     <div class="command-input">
-      <input type="text" placeholder="Type your command..." [(ngModel)]="command" (keyup.enter)="sendCommand()" />
-      <button (click)="sendCommand()">➤</button>
+
+      <input 
+      type="text" 
+      placeholder="Type your command..." 
+      [(ngModel)]="command" 
+      (keyup.enter)="sendCommand()" />
+
+
+      <button 
+      (click)="sendCommand()">
+
+        ➤
+
+      </button>
+
+
     </div>
+
+
+
   </div>
+
+
 </div>

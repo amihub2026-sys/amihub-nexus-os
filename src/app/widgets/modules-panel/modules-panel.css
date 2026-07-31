@@ -1,70 +1,287 @@
-.panel{
+.modules-panel {
 
-     width:320px;
-    padding:22px;
+  padding: 30px;
 
-    border-radius:20px;
+  background:
+  rgba(5,10,25,0.75);
 
-    background:#090b14;
+  border:1px solid rgba(0,230,255,0.35);
 
-    border:1px solid #11d7ff88;
+  border-radius:22px;
 
-    box-shadow:0 0 20px #00d9ff33;
+  box-shadow:
+  0 0 30px rgba(0,230,255,0.15);
 
-}
-
-h3{
-
-    color:white;
-
-    font-size:28px;
-
-    margin-bottom:18px;
+  backdrop-filter:blur(15px);
 
 }
 
-.module-item{
 
-    display:flex;
 
-    align-items:center;
+.modules-panel h2 {
 
-    margin:12px 0;
+  color:white;
 
-    color:#2ad7ff;
+  font-size:28px;
 
-    font-size:20px;
+  margin-bottom:25px;
 
-}
-
-.dot{
-
-    width:12px;
-
-    height:12px;
-
-    background:#49f0ff;
-
-    border-radius:50%;
-
-    margin-right:16px;
-
-    box-shadow:0 0 15px #49f0ff;
+  letter-spacing:1px;
 
 }
 
-.name{
 
-    flex:1;
+
+/* MODULE ROW */
+
+.module-item {
+
+  height:45px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  padding:0 15px;
+
+  margin-bottom:12px;
+
+  border-radius:10px;
+
+  color:#00eaff;
+
+  transition:.3s ease;
 
 }
 
-b{
 
-    color:#73f6ff;
+
+/* LEFT SIDE */
+
+.module-left {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:15px;
 
 }
 
-b{
-    font-size:18px;
+
+
+/* MODULE NAME */
+
+.name {
+
+  flex:1;
+
+  font-size:18px;
+
+}
+
+
+
+/* STATUS */
+
+.module-status {
+
+  font-size:17px;
+
+  font-weight:bold;
+
+}
+
+
+
+/* DOT */
+
+.dot {
+
+  width:10px;
+
+  height:10px;
+
+  border-radius:50%;
+
+  background:#334155;
+
+  box-shadow:
+  0 0 10px #334155;
+
+  transition:.3s;
+
+}
+
+
+
+/* ======================
+   BOOTING STATE
+====================== */
+
+
+.module-item.booting {
+
+  color:#ffd700;
+
+  background:
+  rgba(250,204,21,0.08);
+
+  border-left:
+  3px solid #ffd700;
+
+  animation:bootPulse 1s infinite;
+
+}
+
+
+
+.module-item.booting .dot {
+
+  background:#ffd700;
+
+  box-shadow:
+  0 0 20px #ffd700;
+
+  animation:
+  dotPulse 1s infinite;
+
+}
+
+
+
+.booting-text {
+
+  color:#ffd700;
+
+}
+
+
+
+
+
+/* ======================
+   ONLINE STATE
+====================== */
+
+
+.module-item.online {
+
+  color:#22ff88;
+
+  background:
+  rgba(0,255,120,0.12);
+
+  border-left:
+  3px solid #22ff88;
+
+}
+
+
+
+.module-item.online .dot {
+
+  background:#22ff88;
+
+  box-shadow:
+  0 0 10px #22ff88,
+  0 0 25px #22ff88;
+
+}
+
+
+
+.online-text {
+
+  color:#22ff88;
+
+}
+
+
+
+
+
+/* ======================
+   OFFLINE STATE
+====================== */
+
+
+.module-item:not(.online):not(.booting) {
+
+  color:#00eaff;
+
+}
+
+
+.module-item:not(.online):not(.booting) .dot {
+
+  background:#334155;
+
+  box-shadow:
+  0 0 10px #334155;
+
+}
+
+
+
+
+
+/* HOVER */
+
+.module-item:hover {
+
+  transform:translateX(5px);
+
+  background:
+  rgba(0,230,255,0.08);
+
+}
+
+
+
+
+
+/* ANIMATIONS */
+
+
+@keyframes bootPulse {
+
+
+  0%,100% {
+
+    opacity:1;
+
+  }
+
+
+  50% {
+
+    opacity:.45;
+
+  }
+
+
+}
+
+
+
+@keyframes dotPulse {
+
+
+  0%,100% {
+
+    transform:scale(1);
+
+  }
+
+
+  50% {
+
+    transform:scale(1.5);
+
+  }
+
+
 }

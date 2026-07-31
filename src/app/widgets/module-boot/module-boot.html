@@ -1,0 +1,65 @@
+<div class="boot-screen">
+
+
+<h2>
+⚡ {{moduleName}}
+</h2>
+
+
+<h3>
+SYSTEM BOOT
+</h3>
+
+
+<div class="status">
+
+> Loading {{moduleName}} Module
+
+</div>
+
+
+<div class="bar">
+
+<div
+class="fill"
+[style.width.%]="progress">
+
+</div>
+
+</div>
+
+
+
+<div class="percentage">
+
+{{progress}}%
+
+</div>
+
+
+
+<div class="logs">
+
+
+<div *ngFor="let log of logs">
+
+{{'>'}} {{log}}
+
+</div>
+
+
+</div>
+
+
+
+<div 
+*ngIf="online"
+class="online">
+
+✓ {{moduleName}} ONLINE
+
+</div>
+
+
+
+</div>

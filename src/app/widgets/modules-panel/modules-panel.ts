@@ -1,22 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModuleManagerService, ModuleStatus } from '../../core/services/module-manager.service';
+
 
 @Component({
   selector: 'app-modules-panel',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './modules-panel.html',
-  styleUrls: ['./modules-panel.css']
+  standalone:true,
+  imports:[
+    CommonModule
+  ],
+  templateUrl:'./modules-panel.html',
+  styleUrls:['./modules-panel.css']
 })
-export class ModulesPanel {
-  modules = [
-    { name: 'Web Engine', status: 'ACTIVE' },
-    { name: 'App Engine', status: 'ACTIVE' },
-    { name: 'AI Engine', status: 'ONLINE' },
-    { name: 'Cloud Sync', status: 'SYNCED' },
-    { name: 'Voice AI', status: 'READY' },
-    { name: 'Camera Vision', status: 'STANDBY' },
-    { name: 'Neural Network', status: 'RUNNING' },
-    { name: 'Memory Cache', status: 'OPTIMAL' }
-  ];
+export class ModulesPanel implements OnInit {
+
+
+  modules: ModuleStatus[] = [];
+
+
+  constructor(
+    private moduleManager: ModuleManagerService,
+    private cdr: ChangeDetectorRef
+  ){}
+
+
+
+  ngOnInit(){
+
+
+    this.moduleManager.modules$
+    .subscribe(data=>{
+
+
+      console.log(
+        "MODULE PANEL UPDATE:",
+        data
+      );
+
+
+      this.modules = [...data];
+
+
+      // force UI refresh
+      this.cdr.detectChanges();
+
+
+    });
+
+
+  }
+
+
+
 }

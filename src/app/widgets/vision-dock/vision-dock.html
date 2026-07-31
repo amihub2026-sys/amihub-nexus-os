@@ -1,14 +1,81 @@
-<div class="vision-dock" [class.listening]="isListening">
-  <button class="mic-orb" (click)="activateVoice()">
-    🎤
-  </button>
+<!-- Dock -->
 
-  <div class="vision-info">
-    <h3>{{ isListening ? 'LISTENING...' : 'VISION AI READY' }}</h3>
-    <p>{{ voiceReply }}</p>
+<div class="dock">
 
-    <div class="wave">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-  </div>
+
+<button
+*ngFor="let app of apps"
+(click)="openApp(app)"
+>
+
+{{app.icon}}
+
+</button>
+
+
+</div>
+
+
+
+<!-- Windows -->
+
+
+<div
+*ngFor="let win of openWindows; let i=index"
+>
+
+
+<app-window-manager
+
+*ngIf="!win.minimized"
+
+[title]="win.name"
+
+[icon]="win.icon"
+
+[zIndex]="win.zIndex"
+
+(focusWindow)="focusWindow(win)"
+
+(closeWindow)="closeWindow(i)"
+
+>
+
+
+<ng-container
+
+*ngComponentOutlet="win.component">
+
+</ng-container>
+
+
+</app-window-manager>
+
+
+</div>
+
+
+
+
+<!-- Running Apps -->
+
+
+<div class="running-apps">
+
+
+<button
+
+*ngFor="let win of openWindows"
+
+(click)="restoreWindow(win)"
+
+[class.active]="!win.minimized"
+
+>
+
+{{win.icon}}
+
+</button>
+
+
 </div>

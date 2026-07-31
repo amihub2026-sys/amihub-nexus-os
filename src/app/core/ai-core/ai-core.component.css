@@ -1,29 +1,41 @@
 .ai-core-shell {
   position: absolute;
-  top: 12%;
+  top: 31%;
   left: 50%;
+
   width: 320px;
   height: 320px;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  filter: drop-shadow(0 0 40px rgba(0, 245, 255, 0.7));
-  animation: coreBreath 4s ease-in-out infinite;
+
+  transform: translate(-50%,-50%);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:150;
+
+  filter: drop-shadow(0 0 40px rgba(0,245,255,.7));
+
+  animation:
+  coreBoot 1.8s ease forwards,
+  coreBreath 4s ease-in-out infinite 1.8s;
 }
 
 .core-sphere {
-  width: 170px;
-  height: 170px;
+  width: 210px;
+  height: 210px;
   border-radius: 50%;
+  z-index:20;
+  overflow:hidden;
+
   background:
-    radial-gradient(circle at 35% 30%, #e0ffff 0%, #00f5ff 12%, #0077ff 35%, #020617 72%);
+    radial-gradient(circle at 35% 30%, #e0ffff 0%, #77e5e8 12%, #a8caf1 35%, #020617 72%);
   box-shadow:
     0 0 35px #00f5ff,
     0 0 80px rgba(0, 191, 255, 0.8),
     inset 0 0 45px rgba(0, 245, 255, 0.7);
   position: relative;
-  animation: spherePulse 2.5s ease-in-out infinite, rotateCore 12s linear infinite;
+  animation:spherePulse 2.5s ease-in-out infinite;
 }
 
 .core-glow {
@@ -116,4 +128,84 @@
 @keyframes particleMove {
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
   50% { transform: translate(20px, -25px) scale(1.6); opacity: 1; }
+}
+
+.ai-core-shell{
+
+animation:
+coreBoot 1.8s ease forwards,
+coreBreath 4s ease-in-out infinite 1.8s;
+
+}
+
+
+@keyframes coreBoot{
+
+
+0%{
+
+opacity:0;
+
+transform:
+translate(-50%,-50%)
+scale(.3);
+
+filter:blur(20px);
+
+}
+
+
+
+100%{
+
+opacity:1;
+
+transform:
+translate(-50%,-50%)
+scale(1);
+
+filter:blur(0);
+
+}
+
+
+}
+
+.core-sphere::after{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+linear-gradient(
+transparent,
+rgba(255,255,255,.5),
+transparent
+);
+
+animation:
+coreScan 2s infinite;
+
+}
+
+
+
+@keyframes coreScan{
+
+0%{
+
+transform:translateY(-120%);
+
+}
+
+
+100%{
+
+transform:translateY(120%);
+
+}
+
 }

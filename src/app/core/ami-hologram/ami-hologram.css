@@ -1,516 +1,280 @@
-.holo-system{
+/* =====================
+ AMI HOLOGRAM SYSTEM CENTERED
+===================== */
+.holo-system {
 
-    position:relative;
+     position:absolute;
 
-    width:560px;
-    height:520px;
+    top:52%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:600px;
+    height:600px;
 
     display:flex;
     justify-content:center;
     align-items:center;
 
-    transform:translateY(-130px);
-
 }
-
 
 /* =====================
- RADAR
+ AI CORE
 ===================== */
-
-
-.radar-ring{
-
-position:absolute;
-
-width:430px;
-height:430px;
-
-border-radius:50%;
-
-border:1px dashed rgba(0,255,255,.7);
-
-box-shadow:
-0 0 40px cyan;
-
-animation:rotate 15s linear infinite;
-
+.ami-center {
+      position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:300;
+    pointer-events:none;
 }
 
 
+
+.ami-center h2 {
+
+    position:relative;
+    z-index:1000;
+
+    margin-top:-90px;
+
+    font-size:42px;
+    letter-spacing:12px;
+
+    color:#00ffff;
+
+    text-shadow:
+    0 0 10px cyan,
+    0 0 40px cyan;
+}
 
 /* =====================
- CENTER LOGO
+ MODULE CARDS
 ===================== */
-
-
-.ami-center{
-
-position:absolute;
-
-top:40%;
-left:50%;
-
-transform:translate(-50%,-50%);
-
-text-align:center;
-
-z-index:500;
-
+.module-card {
+    position: absolute;
+    width: 95px;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg, rgba(0,255,255,.20), rgba(0,100,150,.15));
+    border: 1px solid rgba(0,255,255,.8);
+    border-radius: 14px;
+    box-shadow: 0 0 25px cyan, inset 0 0 20px rgba(0,255,255,.3);
+    backdrop-filter: blur(8px);
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    transition: .3s;
 }
 
+.module-card:hover {
+    transform: scale(1.12);
+    box-shadow: 0 0 35px #00e6ff;
+}
 
-.ami-center::before{
+.module-card span {
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 8px;
+    color: #67e8f9;
+    text-align: center;
+}
 
-content:"";
+/* =====================
+ CIRCULAR LAYOUT FOR MODULES
+===================== */
+.card-1 { top:8%; left:50%; transform:translate(-50%,-50%); }
+
+.card-2 { top:25%; left:82%; transform:translate(-50%,-50%); }
+
+.card-3 { top:50%; left:88%; transform:translate(-50%,-50%); }
+
+.card-4 { top:75%; left:82%; transform:translate(-50%,-50%); }
+
+.card-5 { 
+ top:100%; 
+ left:50%; 
+ transform:translate(-50%,-50%);
+ z-index:900;
+ cursor:pointer;
+}
+
+.card-6 { top:75%; left:18%; transform:translate(-50%,-50%); }
+
+.card-7 { top:50%; left:12%; transform:translate(-50%,-50%); }
+
+.card-8 { top:25%; left:18%; transform:translate(-50%,-50%); }
+/* =====================
+ FLOOR EFFECT
+===================== */
+.holo-floor {
+
+    position:absolute;
+
+    bottom:0px;
+
+    width:450px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+    ellipse,
+    rgba(0,255,255,.9),
+    rgba(0,150,255,.4),
+    transparent 70%
+    );
+
+    box-shadow:
+    0 0 40px cyan,
+    0 0 100px cyan;
+
+    animation:floorPulse 2s infinite;
+
+    z-index:50;
+
+    pointer-events:none;
+}
+
+/* =====================
+ ANIMATIONS
+===================== */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes floorPulse {
+    50% { transform: scale(1.25); opacity: .5; }
+}
+
+/* =====================
+ CONNECTION ENERGY LINES
+===================== */
+
+.line{
 
 position:absolute;
 
-width:300px;
-height:180px;
-
-
-left:50%;
 top:50%;
+left:50%;
 
-
-transform:translate(-50%,-50%);
-
+width:170px;
+height:2px;
 
 background:
-
-radial-gradient(
-circle,
-rgba(0,255,255,.12),
-transparent 70%
+linear-gradient(
+90deg,
+transparent,
+cyan,
+transparent
 );
 
+box-shadow:
+0 0 15px cyan;
 
-filter:blur(30px);
+opacity:.6;
+
+z-index:100;
+
+transform-origin:left center;
+
+}
 
 
-z-index:-1;
+/* directions */
+
+.line-1{
+transform:rotate(-90deg);
+}
+
+.line-2{
+transform:rotate(-45deg);
+}
+
+.line-3{
+transform:rotate(0deg);
+}
+
+.line-4{
+transform:rotate(45deg);
+}
+
+.line-5{
+transform:rotate(90deg);
+}
+
+.line-6{
+transform:rotate(135deg);
+}
+
+.line-7{
+transform:rotate(180deg);
+}
+
+.line-8{
+transform:rotate(225deg);
+}
+
+.holo-system.online{
+
+animation:
+holoActivate 2s ease;
 
 }
 
 
 
-.ami-logo{
-
-width:380px;
-height:220px;
-
-object-fit:contain;
-
-mix-blend-mode:screen;
-
-filter:
-brightness(2.5)
-contrast(1.5)
-drop-shadow(0 0 20px cyan)
-drop-shadow(0 0 60px cyan);
-
-animation:logoFloat 4s infinite ease-in-out;
-
-}
-
-
-
-.ami-center h2{
-
-font-size:42px;
-
-letter-spacing:12px;
-
-margin-top:5px;
+.holo-system.online .ami-center h2{
 
 
 color:#00ffff;
 
-
 text-shadow:
 
-0 0 10px cyan,
-
+0 0 20px cyan,
 0 0 50px cyan;
 
 }
 
 
 
-
-/* =====================
- MODULE BOXES
-===================== */
-
-
-.module-card{
-
-
-position:absolute;
-
-
-width:95px;
-height:95px;
-
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-
-
-background:
-
-linear-gradient(
-145deg,
-rgba(0,255,255,.20),
-rgba(0,100,150,.15)
-);
-
-
-
-border:
-
-1px solid rgba(0,255,255,.8);
-
-
-
-border-radius:14px;
-
+.holo-system.online .module-card{
 
 
 box-shadow:
 
-0 0 25px cyan,
-inset 0 0 20px rgba(0,255,255,.3);
-
-
-
-backdrop-filter:blur(8px);
-
-
-
-font-size:30px;
-
-
-color:white;
-
-
-
-animation:
-
-floatBox 4s infinite ease-in-out;
-
-
-}
-
-
-.module-card span{
-
-
-font-size:11px;
-
-font-weight:bold;
-
-
-margin-top:8px;
-
-
-color:#67e8f9;
-
-
-text-align:center;
-
+0 0 25px cyan;
 
 }
 
 
 
-/* POSITIONS */
+@keyframes holoActivate{
 
 
-.card-1{
-top:-40px;
-left:290px;
-}
+0%{
 
+opacity:.2;
 
-.card-2{
-top:40px;
-left:40px;
-}
-
-
-.card-3{
-top:40px;
-right:40px;
-}
-
-
-.card-4{
-left:-50px;
-top:230px;
-}
-
-
-.card-5{
-right:-50px;
-top:230px;
-}
-
-
-.card-6{
-bottom:70px;
-left:40px;
-}
-
-
-.card-7{
-bottom:70px;
-right:40px;
-}
-
-
-.card-8{
-bottom:-20px;
-left:290px;
-}
-
-
-
-/* =====================
- FLOOR
-===================== */
-
-
-.holo-floor{
-
-
-position:absolute;
-
-
-bottom:10px;
-
-
-width:450px;
-
-height:120px;
-
-
-
-border-radius:50%;
-
-
-background:
-
-radial-gradient(
-ellipse,
-rgba(0,255,255,.9),
-rgba(0,150,255,.4),
-transparent 70%
-);
-
-
-
-box-shadow:
-
-0 0 40px cyan,
-0 0 100px cyan;
-
-
-
-animation:
-
-floorPulse 2s infinite;
-
+transform:scale(.8);
 
 }
 
 
 
-/* =====================
- ANIMATIONS
-===================== */
-
-
-@keyframes rotate{
-
-
-from{
-
-transform:rotate(0deg);
-
-}
-
-to{
-
-transform:rotate(360deg);
-
-}
-
-
-}
-
-
-
-@keyframes logoFloat{
-
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-
-50%{
-
-transform:translateY(-12px);
-
-}
-
-
-}
-
-
-
-@keyframes floorPulse{
-
-
-50%{
-
-transform:scale(1.25);
-
-opacity:.5;
-
-}
-
-}
-
-
-
-@keyframes floatBox{
-
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-
-50%{
-
-transform:translateY(-8px);
-
-}
-
-
-}
-
-.holo-beam{
-
-
-position:absolute;
-
-
-width:140px;
-
-height:350px;
-
-
-background:
-
-linear-gradient(
-transparent,
-rgba(0,255,255,.35),
-transparent
-);
-
-
-filter:blur(20px);
-
-
-animation:beam 2s infinite;
-
-
-}
-
-
-
-@keyframes beam{
-
-
-0%,100%{
-
-opacity:.3;
-
-}
-
-
-50%{
+100%{
 
 opacity:1;
 
-}
-
-
-}
-
-.laser-beam{
-
-position:absolute;
-
-bottom:70px;
-
-width:4px;
-
-height:220px;
-
-
-background:
-
-linear-gradient(
-transparent,
-cyan,
-transparent
-);
-
-
-box-shadow:
-
-0 0 40px cyan;
-
-
-animation:
-
-beamMove 2s infinite;
-
-
-}
-
-
-@keyframes beamMove{
-
-0%,100%{
-
-opacity:.3;
-
-transform:scaleY(.5);
-
-}
-
-
-50%{
-
-opacity:1;
-
-transform:scaleY(1);
+transform:scale(1);
 
 }
 
