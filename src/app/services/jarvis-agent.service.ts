@@ -50,6 +50,10 @@ export class JarvisAgentService {
   this.socket.emit('open-app', appName);
 }
 
+openFolder(folderName: string): void {
+  this.socket.emit('open-folder', folderName);
+}
+
 onCommandResult(callback: (data: any) => void): void {
   this.socket.on('command-result', callback);
 }

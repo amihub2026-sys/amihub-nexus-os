@@ -401,6 +401,74 @@ export class AssistantPanel implements AfterViewInit {
       return true;
     }
 
+    // =====================================================
+// DOWNLOADS
+// =====================================================
+
+if (
+  command === 'open downloads' ||
+  command === 'open downloads folder' ||
+  command === 'show downloads'
+) {
+
+  console.log(
+    'JARVIS OS COMMAND: OPEN DOWNLOADS'
+  );
+
+  this.executeFolder(
+    'downloads',
+    'Opening Downloads, sir.'
+  );
+
+  return true;
+}
+
+
+// =====================================================
+// DOCUMENTS
+// =====================================================
+
+if (
+  command === 'open documents' ||
+  command === 'open documents folder' ||
+  command === 'show documents'
+) {
+
+  console.log(
+    'JARVIS OS COMMAND: OPEN DOCUMENTS'
+  );
+
+  this.executeFolder(
+    'documents',
+    'Opening Documents, sir.'
+  );
+
+  return true;
+}
+
+
+// =====================================================
+// DESKTOP
+// =====================================================
+
+if (
+  command === 'open desktop' ||
+  command === 'show desktop' ||
+  command === 'open desktop folder'
+) {
+
+  console.log(
+    'JARVIS OS COMMAND: OPEN DESKTOP'
+  );
+
+  this.executeFolder(
+    'desktop',
+    'Opening Desktop, sir.'
+  );
+
+  return true;
+}
+
 
     // Not a local command
     return false;
@@ -412,61 +480,78 @@ export class AssistantPanel implements AfterViewInit {
   // EXECUTE APPLICATION
   // =========================================================
 
-  private executeApp(
-    appName: string,
-    message: string
-  ) {
+ private executeApp(
+  appName: string,
+  message: string
+) {
 
-    // -----------------------------------------
-    // EXECUTING STATE
-    // -----------------------------------------
+  this.jarvisStatus = 'EXECUTING';
 
-    this.jarvisStatus =
-      'EXECUTING';
+  this.statusChange.emit(
+    this.jarvisStatus
+  );
 
-    this.statusChange.emit(
-      this.jarvisStatus
-    );
+  console.log(
+    'SENDING TO LOCAL AGENT:',
+    appName
+  );
 
+  this.jarvisAgent.openApp(
+    appName
+  );
 
-    console.log(
-      'SENDING TO LOCAL AGENT:',
-      appName
-    );
+  this.messages.push({
+    from: 'jarvis',
+    text: message,
+    time: this.currentTime()
+  });
 
+  this.scrollToBottom();
 
-    // -----------------------------------------
-    // SEND TO MAC AGENT
-    // -----------------------------------------
+  this.speak(
+    message
+  );
 
-    this.jarvisAgent.openApp(
-      appName
-    );
-
-
-    // -----------------------------------------
-    // CHAT MESSAGE
-    // -----------------------------------------
-
-    this.messages.push({
-      from: 'jarvis',
-      text: message,
-      time: this.currentTime()
-    });
+}
 
 
-    this.scrollToBottom();
+// =========================================================
+// EXECUTE FOLDER
+// =========================================================
 
+private executeFolder(
+  folderName: string,
+  message: string
+) {
 
-    // -----------------------------------------
-    // SPEAK
-    // -----------------------------------------
+  this.jarvisStatus = 'EXECUTING';
 
-    this.speak(
-      message
-    );
+  this.statusChange.emit(
+    this.jarvisStatus
+  );
 
-  }
+  console.log(
+    'SENDING FOLDER TO LOCAL AGENT:',
+    folderName
+  );
+
+  this.jarvisAgent.openFolder(
+    folderName
+  );
+
+  this.messages.push({
+    from: 'jarvis',
+    text: message,
+    time: this.currentTime()
+  });
+
+  this.scrollToBottom();
+
+  this.speak(
+    message
+  );
+
+}
 
 
   // =========================================================

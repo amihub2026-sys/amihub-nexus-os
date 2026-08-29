@@ -99,6 +99,57 @@ io.on("connection", (socket) => {
   });
 });
 
+socket.on("open-folder", (folderName) => {
+
+  console.log("JARVIS COMMAND: OPEN FOLDER:", folderName);
+
+  const home = process.env.HOME;
+
+  const allowedFolders = {
+    downloads: `${home}/Downloads`,
+    documents: `${home}/Documents`,
+    desktop: `${home}/Desktop`,
+    home: home
+  };
+
+  const key = String(folderName).toLowerCase().trim();
+  const folderPath = allowedFolders[key];
+
+  if (!folderPath) {
+
+    socket.emit("command-result", {
+      success: false,
+      message: `Folder "${folderName}" is not allowed`
+    });
+
+    return;
+  }
+
+  execFile("open", [folderPath], (error) => {
+
+    if (error) {
+
+      console.error("OPEN FOLDER ERROR:", error);
+
+      socket.emit("command-result", {
+        success: false,
+        message: `Could not open ${folderName}`
+      });
+
+      return;
+    }
+
+    console.log("FOLDER OPENED:", folderPath);
+
+    socket.emit("command-result", {
+      success: true,
+      message: `${folderName} opened`
+    });
+
+  });
+
+});
+
 });
 
 server.listen(5000, "127.0.0.1", () => {
