@@ -72,8 +72,20 @@ font-size:22px;
 color:#22ff88;
 
 text-shadow:
-0 0 20px #22ff88;
+0 0 30px #22ff88;
 
+animation:
+onlinePulse 1s infinite;
+
+}
+
+
+@keyframes onlinePulse{
+
+50%{
+
+opacity:.5;
+}
 }
 
 .status{

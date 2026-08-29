@@ -210,3 +210,93 @@ opacity:.4;
 }
 
 }
+
+.assistant-head p{
+
+color:#00ffff;
+font-weight:700;
+letter-spacing:2px;
+
+}
+
+
+.assistant-head p::before{
+
+content:"●";
+
+margin-right:8px;
+
+color:#00ff88;
+
+animation:pulseDot 1s infinite;
+
+}
+
+
+@keyframes pulseDot{
+
+0%{
+opacity:.3;
+}
+
+50%{
+opacity:1;
+}
+
+100%{
+opacity:.3;
+}
+
+}
+
+/* JARVIS SPEAKING EFFECT */
+
+.assistant-panel.speaking{
+
+box-shadow:
+0 0 40px cyan,
+0 0 80px cyan;
+
+animation:
+jarvisSpeak 0.8s infinite;
+
+}
+
+
+
+/* JARVIS LISTENING EFFECT */
+
+.assistant-panel.listening{
+
+box-shadow:
+0 0 30px #00ffcc;
+
+}
+
+
+
+@keyframes jarvisSpeak{
+
+
+0%{
+
+transform:scale(1);
+
+}
+
+
+50%{
+
+transform:scale(1.03);
+
+}
+
+
+100%{
+
+transform:scale(1);
+
+}
+
+
+}

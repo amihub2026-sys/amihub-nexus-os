@@ -21,7 +21,8 @@ import { CameraVision } from '../apps/camera-vision/camera-vision';
 import { NeuralNetwork } from '../apps/neural-network/neural-network';
 import { ModuleBoot } from '../widgets/module-boot/module-boot';
 import { ModuleManagerService } from '../core/services/module-manager.service';
-
+import { DiagnosticsPanel } from '../widgets/diagnostics-panel/diagnostics-panel';
+import { JarvisAgentService } from '../services/jarvis-agent.service';
 
 @Component({
   selector: 'app-desktop',
@@ -46,7 +47,8 @@ import { ModuleManagerService } from '../core/services/module-manager.service';
     CloudSync,
     CameraVision,
     NeuralNetwork,
-    ModuleBoot
+    ModuleBoot,
+    DiagnosticsPanel
   ],
   templateUrl: './desktop.html',
   styleUrls: ['./desktop.css']
@@ -59,6 +61,8 @@ showAssistant = true;
 
 systemBoot = false;
 
+jarvisBoot = false;
+
 systemLogs:string[] = [];
 
  @ViewChild(AssistantPanel)
@@ -67,11 +71,15 @@ assistantPanel?: AssistantPanel;
   openWindows: { name: string; z: number; minimized?: boolean }[] = [];
   zCounter = 800;
   activeApp = '';
+  jarvisStatus = "ONLINE";
+
+  showDiagnostics=false;
 
  constructor(
   private os: OsManagerService,
   private moduleManager: ModuleManagerService,
-  private cdr: ChangeDetectorRef
+  private cdr: ChangeDetectorRef,
+   private jarvisAgent: JarvisAgentService
 ) {
 
 }
@@ -79,6 +87,20 @@ assistantPanel?: AssistantPanel;
 ngOnInit(){
 
 this.startSystemBoot();
+
+this.jarvisAgent.onStatus((data) => {
+  console.log('JARVIS STATUS:', data);
+});
+
+this.jarvisAgent.onSystemInfo((data) => {
+  console.log('SYSTEM INFO:', data);
+});
+
+this.jarvisAgent.onError((error) => {
+  console.error('JARVIS AGENT ERROR:', error);
+});
+
+this.jarvisAgent.getSystemInfo();
 
 }
 
@@ -91,12 +113,19 @@ this.systemLogs = [];
 
 const logs = [
 
-"Initializing Nexus Core",
-"Checking AI Engine",
-"Loading Vision System",
-"Connecting Modules",
-"Activating Neural Network",
-"Vision AI Online"
+"Initializing JARVIS Core",
+
+"Loading Neural Intelligence",
+
+"Checking Voice Recognition",
+
+"Activating Vision System",
+
+"Connecting Holographic Interface",
+
+"Scanning System Modules",
+
+"JARVIS AI Online"
 
 ];
 
@@ -131,6 +160,8 @@ setTimeout(()=>{
 
 this.systemBoot = false;
 
+this.jarvisBoot = true;
+
 
 // SET VISION AI ONLINE
 this.moduleManager.activateVisionAI();
@@ -144,7 +175,9 @@ this.cdr.detectChanges();
 setTimeout(()=>{
 
 this.assistantPanel?.speak(
-"Welcome sir. Vision AI online. All systems are operational."
+
+"Welcome sir. JARVIS AI is now online. All systems are operational."
+
 );
 
 
@@ -152,7 +185,7 @@ setTimeout(()=>{
 
 this.assistantPanel?.startWakeMode();
 
-},3000);
+},4000);
 
 
 },500);
@@ -241,19 +274,27 @@ this.checkBootStatus();
 
 if(this.bootingModule){
 
+
 const app =
 this.bootingModule;
 
 
+
 this.assistantPanel?.speak(
-app + " online"
+
+app + " module is online sir."
+
 );
+
 
 
 this.openApp(app);
 
 
+
 this.bootingModule='';
+
+
 
 }
 
@@ -433,7 +474,116 @@ this.activeApp = appName;
 
   executeVoiceCommand(command: string) {
     const cmd = command.toLowerCase();
+
+    if(cmd.includes("vision")){
+
+  this.assistantPanel?.speak(
+    "Vision AI is online. All systems are operational."
+  );
+
+  return;
+
+}
+
+    if(cmd.includes("diagnostics") ||
+cmd.includes("run diagnostics")){
+
+
+this.assistantPanel?.speak(
+"Running Nexus diagnostics."
+);
+
+
+this.showDiagnostics=true;
+
+
+return;
+
+}
+
+    // NEXUS PERSONALITY COMMANDS
+
+if(cmd.includes("hello") || cmd.includes("hi nexus")){
+
+
+this.assistantPanel?.speak(
+
+"Hello anna. Nexus AI is online and ready."
+
+);
+
+
+return;
+
+}
+
+
+
+if(cmd.includes("how are you")){
+
+
+this.assistantPanel?.speak(
+
+"All systems are running perfectly. Vision core is stable."
+
+);
+
+
+return;
+
+}
+
+
+
+if(
+cmd.includes("what can you do") ||
+cmd.includes("your abilities")
+){
+
+
+this.assistantPanel?.speak(
+
+"I can control applications, manage system modules, monitor Nexus OS and assist you."
+
+);
+
+
+return;
+
+}
+
+
+
+if(cmd.includes("who are you")){
+
+
+this.assistantPanel?.speak(
+
+"I am Nexus AI, your intelligent operating system assistant."
+
+);
+
+
+return;
+
+}
+
+if(cmd.includes("scan system")){
+
+
+this.assistantPanel?.speak(
+
+"Scanning Nexus system. All modules are currently operational."
+
+);
+
+
+return;
+
+}
+
     const map: Record<string, string> = {
+      vision: 'Vision AI',
       music: 'Music',
       file: 'Files',
       explorer: 'Files',
@@ -465,18 +615,48 @@ this.activeApp = appName;
           setTimeout(() => this.assistantPanel?.startVoice(), 300);
         }else {
 
-this.assistantPanel?.speak(
-"Opening " + app
+
+this.jarvisMessage(
+"Opening " + app + " module."
 );
 
 
+this.assistantPanel?.speak(
+"Opening " + app + " module."
+);
+
+
+setTimeout(()=>{
+
+
 this.openHoloApp(app);
+
+
+},1500);
+
 
 }
         return;
       }
     }
   }
+jarvisStatusChanged(status:string){
+
+  console.log(
+    "JARVIS STATUS FROM ASSISTANT:",
+    status
+  );
+
+
+  this.jarvisStatus = status;
+
+
+  this.cdr.detectChanges();
+
+}
+
+
+
 getIcon(name:string){
 
 const icons:any={
@@ -590,6 +770,24 @@ this.focusApp(
 next.name
 );
 
+
+}
+
+jarvisMessage(text:string){
+
+if(this.assistantPanel){
+
+this.assistantPanel.messages.push({
+
+from:'jarvis',
+
+text:text,
+
+time:new Date().toLocaleTimeString()
+
+});
+
+}
 
 }
 

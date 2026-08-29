@@ -1,10 +1,45 @@
 <div 
 class="holo-system"
-[class.online]="online">
+
+[class.online]="online"
+
+[class.listening]="jarvisStatus==='LISTENING'"
+
+[class.speaking]="jarvisStatus==='SPEAKING'"
+
+[class.processing]="jarvisStatus==='PROCESSING'"
+
+[class.executing]="jarvisStatus==='EXECUTING'">
   <!-- AI Core -->
  <!-- AI Core Label -->
 <div class="ami-center">
-    <h2>AI CORE</h2>
+
+
+<!-- JARVIS ENERGY RINGS -->
+
+<div class="core-ring ring-1"></div>
+
+<div class="core-ring ring-2"></div>
+
+<div class="core-ring ring-3"></div>
+
+
+<!-- SCANNER -->
+
+<div class="scanner-line"></div>
+
+
+
+<h2>
+JARVIS CORE
+</h2>
+
+
+<p>
+{{jarvisStatus}}
+</p>
+
+
 </div>
 
   <!-- Connection Lines -->
