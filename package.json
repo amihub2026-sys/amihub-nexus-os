@@ -22,6 +22,7 @@
     "@angular/ssr": "^22.0.5",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.3",
     "three": "^0.185.1",
     "tslib": "^2.3.0"
   },

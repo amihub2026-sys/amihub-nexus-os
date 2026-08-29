@@ -8,8 +8,8 @@
     <span class="ai-dot"></span>
 
     <div>
-      <h3>NEXUS AI</h3>
-      <p>Assistant Core Online</p>
+      <h3>JARVIS AI</h3>
+      <p>{{jarvisStatus}}</p>
     </div>
 
 
@@ -32,12 +32,12 @@
     <!-- ADD THIS HERE -->
 
     <div 
-    class="wake-status"
-    *ngIf="wakeMode">
+class="wake-status"
+*ngIf="wakeMode">
 
-      🎤 NEXUS LISTENING
+  🎤 JARVIS LISTENING
 
-    </div>
+</div>
 
 
 
@@ -77,13 +77,13 @@
       <div class="vision-info">
 
         <h4>
-          VISION AI READY
-        </h4>
+  JARVIS AI
+</h4>
 
 
-        <p>
-          {{ isListening ? 'Listening...' : 'Type command or click mic' }}
-        </p>
+<p>
+  {{ jarvisStatus }}
+</p>
 
 
         <div class="wave">

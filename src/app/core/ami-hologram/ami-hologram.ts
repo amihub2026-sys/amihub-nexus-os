@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { OsManagerService } from '../services/os-manager.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { OsManagerService } from '../services/os-manager.service';
   templateUrl:'./ami-hologram.html',
   styleUrls:['./ami-hologram.css']
 })
-export class AmiHologram {
+export class AmiHologram implements OnChanges {
 
 
 @Output() openApp = new EventEmitter<string>();
@@ -15,13 +15,22 @@ export class AmiHologram {
 
 @Input() online = false;
 
+@Input() jarvisStatus = "ONLINE";
+
 
 
 constructor(
 private os: OsManagerService
 ){}
 
+ngOnChanges(){
 
+  console.log(
+    "HOLOGRAM RECEIVED STATUS:",
+    this.jarvisStatus
+  );
+
+}
 
 launch(appName:string){
 

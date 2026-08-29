@@ -1,6 +1,17 @@
-import { Component, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
+} from '@angular/core';
+
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { JarvisAgentService } from '../../services/jarvis-agent.service';
+
 
 @Component({
   selector: 'app-assistant-panel',
@@ -10,401 +21,1107 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./assistant-panel.css']
 })
 export class AssistantPanel implements AfterViewInit {
+
   @Output() commandSend = new EventEmitter<string>();
+
+  @Output() statusChange = new EventEmitter<string>();
+
   @ViewChild('chatBody') chatBody!: ElementRef;
+
 
   command = '';
 
-isListening = false;
+  isListening = false;
 
-isCollapsed = false;
+  isCollapsed = false;
 
-wakeMode = false;
+  wakeMode = false;
+
+  jarvisStatus = 'ONLINE';
+
+  recognition: any;
+
+  commandRecognition: any;
+
 
   messages = [
- { 
- from:'nexus',
- text:'Hello, I am Nexus. How can I help you?',
- time:this.currentTime()
- }
-];
+    {
+      from: 'jarvis',
+      text: 'Hello, I am Jarvis. How can I help you?',
+      time: this.currentTime()
+    }
+  ];
 
 
-constructor(){
-
-}
-
-
-ngAfterViewInit(){
-
-setTimeout(()=>{
-
-this.speak(
-"Hello, I am Nexus. How can I help you?"
-);
-
-},1000);
-
-}
-
-  sendCommand() {
-    const text = this.command.trim();
-    if (!text) return;
-
-    const timestamp = this.currentTime();
-    this.messages.push({ from: 'user', text, time: timestamp });
-    const reply =
-"Command received. Processing now.";
+  constructor(
+    private jarvisAgent: JarvisAgentService
+  ) {}
 
 
-this.messages.push({
-from:'nexus',
-text:reply,
-time:timestamp
-});
+  // =========================================================
+  // AFTER VIEW INIT
+  // =========================================================
+
+  ngAfterViewInit() {
+
+    // Listen for responses from Mac local agent
+    this.jarvisAgent.onCommandResult((result: any) => {
+
+      console.log(
+        'JARVIS COMMAND RESULT:',
+        result
+      );
+
+      if (!result.success) {
+
+        this.messages.push({
+          from: 'jarvis',
+          text: result.message || 'Unable to execute the command.',
+          time: this.currentTime()
+        });
+
+        this.speak(
+          result.message || 'Unable to execute the command.'
+        );
+
+        this.scrollToBottom();
+      }
+
+    });
 
 
-this.speak(reply);
+    setTimeout(() => {
 
-    this.commandSend.emit(text);
-    this.command = '';
-    this.scrollToBottom();
+      this.speak(
+        'Hello, I am Jarvis. How can I help you?'
+      );
+
+    }, 1000);
+
   }
 
- public speak(text:string){
 
+  // =========================================================
+  // NORMAL TEXT COMMAND
+  // =========================================================
 
-if(!window.speechSynthesis){
+  sendCommand() {
 
-console.log(
-"Speech synthesis not supported"
-);
+    const text = this.command.trim();
 
-return;
+    if (!text) return;
 
-}
 
+    const timestamp =
+      this.currentTime();
 
 
-const speech =
-new SpeechSynthesisUtterance(text);
+    this.messages.push({
+      from: 'user',
+      text,
+      time: timestamp
+    });
 
 
+    // -----------------------------------------
+    // FIRST CHECK FOR LOCAL MAC COMMAND
+    // -----------------------------------------
 
-speech.lang = "en-US";
+    if (this.executeLocalCommand(text)) {
 
-speech.rate = 0.85;
+      this.command = '';
 
-speech.pitch = 0.65;
+      this.scrollToBottom();
 
-speech.volume = 1;
+      return;
+    }
 
 
+    // -----------------------------------------
+    // NORMAL AI COMMAND
+    // -----------------------------------------
 
-window.speechSynthesis.cancel();
+    const reply =
+      'Command received. Processing now.';
 
 
+    this.messages.push({
+      from: 'jarvis',
+      text: reply,
+      time: timestamp
+    });
 
-setTimeout(()=>{
 
-window.speechSynthesis.speak(
-speech
-);
+    this.jarvisStatus =
+      'PROCESSING';
 
-},100);
+    this.statusChange.emit(
+      this.jarvisStatus
+    );
 
 
+    this.commandSend.emit(text);
 
-}
 
-startWakeMode(){
+    this.speak(reply);
 
 
-this.wakeMode = true;
+    this.command = '';
 
+    this.scrollToBottom();
 
-const SpeechRecognition =
-(window as any).SpeechRecognition ||
-(window as any).webkitSpeechRecognition;
+  }
 
 
-if(!SpeechRecognition){
+  // =========================================================
+  // JARVIS SPEAK
+  // =========================================================
 
-console.log(
-"Speech recognition not supported"
-);
+  public speak(text: string) {
 
-return;
+    this.jarvisStatus =
+      'SPEAKING';
 
-}
+    this.statusChange.emit(
+      this.jarvisStatus
+    );
 
 
-const recognition =
-new SpeechRecognition();
+    if (!window.speechSynthesis) {
 
+      console.log(
+        'Speech synthesis not supported'
+      );
 
-recognition.lang = "en-US";
+      return;
+    }
 
-recognition.continuous = true;
 
-recognition.interimResults = false;
+    const speech =
+      new SpeechSynthesisUtterance(text);
 
 
+    speech.lang =
+      'en-US';
 
-recognition.onresult = (event:any)=>{
+    speech.rate =
+      0.85;
 
+    speech.pitch =
+      0.65;
 
-const text =
-event.results[
-event.results.length - 1
-][0].transcript.toLowerCase();
+    speech.volume =
+      1;
 
 
+    window.speechSynthesis.cancel();
 
-console.log(
-"Nexus heard:",
-text
-);
 
+    setTimeout(() => {
 
+      window.speechSynthesis.speak(
+        speech
+      );
 
-if(text.includes("hey vision")){
 
+      speech.onend = () => {
 
-this.messages.push({
+        this.jarvisStatus =
+          'LISTENING';
 
-from:'nexus',
+        this.statusChange.emit(
+          this.jarvisStatus
+        );
 
-text:'Yes sir?',
+      };
 
-time:this.currentTime()
+    }, 100);
 
-});
+  }
 
 
-this.speak(
-"Yes sir?"
-);
+  // =========================================================
+  // LOCAL MAC COMMAND HANDLER
+  // =========================================================
 
+  private executeLocalCommand(
+    rawCommand: string
+  ): boolean {
 
-this.startCommandMode();
+    let command =
+      rawCommand
+        .toLowerCase()
+        .trim();
 
 
-}
+    // Remove wake word
+    command = command
+      .replace(
+        /^hey\s+jarvis[\s,]*/i,
+        ''
+      )
+      .replace(
+        /^jarvis[\s,]*/i,
+        ''
+      )
+      .trim();
 
 
-};
+    console.log(
+      'CHECKING LOCAL COMMAND:',
+      command
+    );
 
 
+    // =====================================================
+    // GOOGLE CHROME
+    // =====================================================
 
-recognition.start();
+    if (
+      command === 'open chrome' ||
+      command === 'open google chrome' ||
+      command === 'launch chrome' ||
+      command === 'launch google chrome' ||
+      command === 'start chrome'
+    ) {
 
+      console.log(
+        'JARVIS OS COMMAND: OPEN CHROME'
+      );
 
-}
 
-startCommandMode(){
+      this.executeApp(
+        'chrome',
+        'Opening Google Chrome, sir.'
+      );
 
 
-const SpeechRecognition =
-(window as any).SpeechRecognition ||
-(window as any).webkitSpeechRecognition;
+      return true;
+    }
 
 
+    // =====================================================
+    // SAFARI
+    // =====================================================
 
-const recognition =
-new SpeechRecognition();
+    if (
+      command === 'open safari' ||
+      command === 'launch safari' ||
+      command === 'start safari'
+    ) {
 
+      console.log(
+        'JARVIS OS COMMAND: OPEN SAFARI'
+      );
 
-recognition.lang="en-US";
 
-recognition.continuous=false;
+      this.executeApp(
+        'safari',
+        'Opening Safari, sir.'
+      );
 
-recognition.interimResults=false;
 
+      return true;
+    }
 
 
-recognition.onresult=(event:any)=>{
+    // =====================================================
+    // VISUAL STUDIO CODE
+    // =====================================================
 
+    if (
+      command === 'open vs code' ||
+      command === 'open vscode' ||
+      command === 'open visual studio code' ||
+      command === 'launch vs code' ||
+      command === 'launch vscode'
+    ) {
 
-const command =
-event.results[0][0].transcript;
+      console.log(
+        'JARVIS OS COMMAND: OPEN VS CODE'
+      );
 
 
+      this.executeApp(
+        'vscode',
+        'Opening Visual Studio Code, sir.'
+      );
 
-this.messages.push({
 
-from:'user',
+      return true;
+    }
 
-text:command,
 
-time:this.currentTime()
+    // =====================================================
+    // TERMINAL
+    // =====================================================
 
-});
+    if (
+      command === 'open terminal' ||
+      command === 'launch terminal' ||
+      command === 'start terminal'
+    ) {
 
+      console.log(
+        'JARVIS OS COMMAND: OPEN TERMINAL'
+      );
 
 
-const lower =
-command.toLowerCase();
+      this.executeApp(
+        'terminal',
+        'Opening Terminal, sir.'
+      );
 
 
+      return true;
+    }
 
-if(lower.includes("open")){
 
+    // =====================================================
+    // CALCULATOR
+    // =====================================================
 
-this.speak(
-"Opening application"
-);
+    if (
+      command === 'open calculator' ||
+      command === 'launch calculator' ||
+      command === 'start calculator'
+    ) {
 
+      console.log(
+        'JARVIS OS COMMAND: OPEN CALCULATOR'
+      );
 
-}
 
+      this.executeApp(
+        'calculator',
+        'Opening Calculator, sir.'
+      );
 
-this.commandSend.emit(command);
 
+      return true;
+    }
 
 
-this.scrollToBottom();
+    // Not a local command
+    return false;
 
+  }
 
-};
 
+  // =========================================================
+  // EXECUTE APPLICATION
+  // =========================================================
 
+  private executeApp(
+    appName: string,
+    message: string
+  ) {
 
-recognition.start();
+    // -----------------------------------------
+    // EXECUTING STATE
+    // -----------------------------------------
 
+    this.jarvisStatus =
+      'EXECUTING';
 
-}
+    this.statusChange.emit(
+      this.jarvisStatus
+    );
+
+
+    console.log(
+      'SENDING TO LOCAL AGENT:',
+      appName
+    );
+
+
+    // -----------------------------------------
+    // SEND TO MAC AGENT
+    // -----------------------------------------
+
+    this.jarvisAgent.openApp(
+      appName
+    );
+
+
+    // -----------------------------------------
+    // CHAT MESSAGE
+    // -----------------------------------------
+
+    this.messages.push({
+      from: 'jarvis',
+      text: message,
+      time: this.currentTime()
+    });
+
+
+    this.scrollToBottom();
+
+
+    // -----------------------------------------
+    // SPEAK
+    // -----------------------------------------
+
+    this.speak(
+      message
+    );
+
+  }
+
+
+  // =========================================================
+  // WAKE MODE
+  // =========================================================
+
+  startWakeMode() {
+
+    this.wakeMode =
+      true;
+
+
+    this.jarvisStatus =
+      'LISTENING';
+
+    this.statusChange.emit(
+      this.jarvisStatus
+    );
+
+
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+      console.log(
+        'Speech recognition not supported'
+      );
+
+      return;
+
+    }
+
+
+    // Don't create multiple wake recognizers
+    if (this.recognition) {
+
+      try {
+
+        this.recognition.abort();
+
+      }
+      catch {}
+
+      this.recognition = null;
+
+    }
+
+
+    this.recognition =
+      new SpeechRecognition();
+
+
+    this.recognition.lang =
+      'en-US';
+
+    this.recognition.continuous =
+      true;
+
+    this.recognition.interimResults =
+      false;
+
+
+    // =====================================================
+    // WAKE RESULT
+    // =====================================================
+
+    this.recognition.onresult =
+      (event: any) => {
+
+        const text =
+          event.results[
+            event.results.length - 1
+          ][0]
+            .transcript
+            .toLowerCase()
+            .trim();
+
+
+        console.log(
+          'JARVIS WAKE:',
+          text
+        );
+
+
+        if (
+          text.includes('hey jarvis') ||
+          text.includes('jarvis')
+        ) {
+
+          // ---------------------------------------
+          // Example:
+          // "Jarvis open Chrome"
+          // ---------------------------------------
+
+          if (
+            this.executeLocalCommand(text)
+          ) {
+
+            try {
+
+              this.recognition.stop();
+
+            }
+            catch {}
+
+
+            return;
+
+          }
+
+
+          // ---------------------------------------
+          // Only wake phrase:
+          // "Jarvis"
+          // ---------------------------------------
+
+          this.jarvisStatus =
+            'RESPONDING';
+
+          this.statusChange.emit(
+            this.jarvisStatus
+          );
+
+
+          try {
+
+            this.recognition.stop();
+
+          }
+          catch {}
+
+
+          this.speak(
+            'Yes sir.'
+          );
+
+
+          setTimeout(() => {
+
+            this.startCommandMode();
+
+          }, 900);
+
+        }
+
+      };
+
+
+    // =====================================================
+    // WAKE ERROR
+    // =====================================================
+
+    this.recognition.onerror =
+      (event: any) => {
+
+        console.log(
+          'Wake recognition error:',
+          event?.error
+        );
+
+
+        // Ignore harmless abort caused by switching modes
+        if (
+          event?.error === 'aborted'
+        ) {
+
+          return;
+
+        }
+
+
+        // Don't immediately create endless restart loops
+        setTimeout(() => {
+
+          if (
+            this.wakeMode &&
+            !this.commandRecognition
+          ) {
+
+            this.startWakeMode();
+
+          }
+
+        }, 1500);
+
+      };
+
+
+    // =====================================================
+    // START WAKE RECOGNITION
+    // =====================================================
+
+    try {
+
+      this.recognition.start();
+
+    }
+    catch (error) {
+
+      console.log(
+        'Wake recognition already running'
+      );
+
+    }
+
+  }
+
+
+  // =========================================================
+  // COMMAND MODE
+  // =========================================================
+
+  startCommandMode() {
+
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+      return;
+
+    }
+
+
+    // Stop wake listener while command listener is active
+    if (this.recognition) {
+
+      try {
+
+        this.recognition.abort();
+
+      }
+      catch {}
+
+      this.recognition = null;
+
+    }
+
+
+    this.commandRecognition =
+      new SpeechRecognition();
+
+
+    this.commandRecognition.lang =
+      'en-US';
+
+    this.commandRecognition.continuous =
+      false;
+
+    this.commandRecognition.interimResults =
+      false;
+
+
+    // =====================================================
+    // COMMAND RESULT
+    // =====================================================
+
+    this.commandRecognition.onresult =
+      (event: any) => {
+
+        const command =
+          event.results[0][0]
+            .transcript
+            .trim();
+
+
+        console.log(
+          'COMMAND:',
+          command
+        );
+
+
+        this.messages.push({
+
+          from: 'user',
+
+          text: command,
+
+          time: this.currentTime()
+
+        });
+
+
+        // -----------------------------------------
+        // FIRST TRY LOCAL MAC COMMAND
+        // -----------------------------------------
+
+        if (
+          this.executeLocalCommand(command)
+        ) {
+
+          return;
+
+        }
+
+
+        // -----------------------------------------
+        // OTHERWISE SEND TO NORMAL AI
+        // -----------------------------------------
+
+        this.jarvisStatus =
+          'PROCESSING';
+
+        this.statusChange.emit(
+          this.jarvisStatus
+        );
+
+
+        setTimeout(() => {
+
+          this.jarvisStatus =
+            'EXECUTING';
+
+          this.statusChange.emit(
+            this.jarvisStatus
+          );
+
+        }, 500);
+
+
+        this.commandSend.emit(
+          command
+        );
+
+
+        this.speak(
+          'Certainly sir. Executing command.'
+        );
+
+
+        this.scrollToBottom();
+
+      };
+
+
+    // =====================================================
+    // COMMAND ERROR
+    // =====================================================
+
+    this.commandRecognition.onerror =
+      (event: any) => {
+
+        console.log(
+          'Command recognition error:',
+          event?.error
+        );
+
+      };
+
+
+    // =====================================================
+    // COMMAND END
+    // =====================================================
+
+    this.commandRecognition.onend =
+      () => {
+
+        this.commandRecognition =
+          null;
+
+
+        setTimeout(() => {
+
+          if (this.wakeMode) {
+
+            this.startWakeMode();
+
+          }
+
+        }, 700);
+
+      };
+
+
+    // =====================================================
+    // START COMMAND RECOGNITION
+    // =====================================================
+
+    try {
+
+      this.commandRecognition.start();
+
+    }
+    catch (error) {
+
+      console.log(
+        'Command recognition already running'
+      );
+
+    }
+
+  }
+
+
+  // =========================================================
+  // MANUAL VOICE BUTTON
+  // =========================================================
 
   startVoice() {
 
-  // show listening immediately
-  this.isListening = true;
-
-  console.log("START VOICE FUNCTION RUNNING");
+    this.isListening =
+      true;
 
 
-  const SpeechRecognition =
-    (window as any).SpeechRecognition ||
-    (window as any).webkitSpeechRecognition;
+    console.log(
+      'START VOICE FUNCTION RUNNING'
+    );
 
 
-  if (!SpeechRecognition) {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
 
-    this.messages.push({
-      from:'nexus',
-      text:'Voice not supported.',
-      time:this.currentTime()
-    });
 
-    this.isListening = false;
+    if (!SpeechRecognition) {
 
-    return;
+      this.messages.push({
+
+        from: 'jarvis',
+
+        text: 'Voice not supported.',
+
+        time: this.currentTime()
+
+      });
+
+
+      this.isListening =
+        false;
+
+
+      this.jarvisStatus =
+        'ONLINE';
+
+
+      return;
+
+    }
+
+
+    const recognition =
+      new SpeechRecognition();
+
+
+    recognition.lang =
+      'en-US';
+
+    recognition.continuous =
+      false;
+
+    recognition.interimResults =
+      false;
+
+
+    recognition.start();
+
+
+    recognition.onresult =
+      (event: any) => {
+
+        const text =
+          event.results[0][0]
+            .transcript
+            .trim();
+
+
+        this.messages.push({
+
+          from: 'user',
+
+          text,
+
+          time: this.currentTime()
+
+        });
+
+
+        // -----------------------------------------
+        // CHECK LOCAL COMMAND
+        // -----------------------------------------
+
+        if (
+          this.executeLocalCommand(text)
+        ) {
+
+          this.isListening =
+            false;
+
+          this.scrollToBottom();
+
+          return;
+
+        }
+
+
+        // -----------------------------------------
+        // NORMAL COMMAND
+        // -----------------------------------------
+
+        this.jarvisStatus =
+          'PROCESSING';
+
+        this.statusChange.emit(
+          this.jarvisStatus
+        );
+
+
+        this.commandSend.emit(
+          text
+        );
+
+
+        this.speak(
+          'Processing command'
+        );
+
+
+        this.isListening =
+          false;
+
+
+        this.scrollToBottom();
+
+      };
+
+
+    recognition.onerror =
+      () => {
+
+        this.messages.push({
+
+          from: 'jarvis',
+
+          text: 'Microphone error.',
+
+          time: this.currentTime()
+
+        });
+
+
+        this.isListening =
+          false;
+
+
+        this.scrollToBottom();
+
+      };
+
+
+    recognition.onend =
+      () => {
+
+        console.log(
+          'VOICE ENDED'
+        );
+
+
+        if (
+          this.isListening
+        ) {
+
+          this.isListening =
+            false;
+
+        }
+
+      };
 
   }
 
 
-  const recognition = new SpeechRecognition();
-
-  recognition.lang = 'en-US';
-
-  recognition.continuous = false;
-
-  recognition.interimResults = false;
-
-
-  recognition.start();
-
-
-
-  recognition.onresult = (event:any)=>{
-
-    const text =
-    event.results[0][0].transcript;
-
-
-    this.messages.push({
-      from:'user',
-      text:text,
-      time:this.currentTime()
-    });
-
-    this.speak(
-"Processing command"
-);
-
-
-    this.commandSend.emit(text);
-
-
-    this.isListening=false;
-
-
-    this.scrollToBottom();
-
-  };
-
-
-
-  recognition.onerror = ()=>{
-
-    this.messages.push({
-      from:'nexus',
-      text:'Microphone error.',
-      time:this.currentTime()
-    });
-
-
-    this.isListening=false;
-
-
-    this.scrollToBottom();
-
-  };
-
-
-  recognition.onend = ()=>{
-
-  console.log("VOICE ENDED");
-
-  if(this.isListening){
-
-    this.isListening = false;
-
-  }
-
-};
-
-}
+  // =========================================================
+  // COLLAPSE PANEL
+  // =========================================================
 
   toggleCollapse() {
-    this.isCollapsed = !this.isCollapsed;
+
+    this.isCollapsed =
+      !this.isCollapsed;
+
   }
 
-activateVoice(){
 
-  console.log("ACTIVATE VOICE CALLED");
+  // =========================================================
+  // ACTIVATE VOICE
+  // =========================================================
 
-  this.isCollapsed = false;
+  activateVoice() {
 
-  setTimeout(()=>{
+    console.log(
+      'ACTIVATE VOICE CALLED'
+    );
 
-    console.log("STARTING VOICE");
 
-    this.startVoice();
+    this.isCollapsed =
+      false;
 
-  },300);
 
-}
+    setTimeout(() => {
+
+      console.log(
+        'STARTING VOICE'
+      );
+
+
+      this.startVoice();
+
+    }, 300);
+
+  }
+
+
+  // =========================================================
+  // SCROLL CHAT
+  // =========================================================
 
   scrollToBottom() {
+
     setTimeout(() => {
-      if (this.chatBody) {
-        this.chatBody.nativeElement.scrollTop = this.chatBody.nativeElement.scrollHeight;
+
+      if (
+        this.chatBody
+      ) {
+
+        this.chatBody.nativeElement.scrollTop =
+          this.chatBody.nativeElement.scrollHeight;
+
       }
+
     }, 50);
+
   }
 
+
+  // =========================================================
+  // CURRENT TIME
+  // =========================================================
+
   currentTime(): string {
-    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    return new Date()
+      .toLocaleTimeString(
+        [],
+        {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }
+      );
+
   }
+
 }

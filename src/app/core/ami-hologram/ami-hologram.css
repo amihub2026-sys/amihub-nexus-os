@@ -23,13 +23,20 @@
  AI CORE
 ===================== */
 .ami-center {
-      position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-    z-index:300;
-    pointer-events:none;
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+text-align:center;
+
+z-index:300;
+
+pointer-events:none;
+
 }
 
 
@@ -39,10 +46,12 @@
     position:relative;
     z-index:1000;
 
-    margin-top:-90px;
+    margin-top:0px;
 
-    font-size:42px;
-    letter-spacing:12px;
+    font-size:34px;
+    letter-spacing:8px;
+
+    margin-bottom: 20px;
 
     color:#00ffff;
 
@@ -127,7 +136,7 @@
     background:
     radial-gradient(
     ellipse,
-    rgba(0,255,255,.9),
+    rgba(0,255,255,.5),
     rgba(0,150,255,.4),
     transparent 70%
     );
@@ -278,5 +287,330 @@ transform:scale(1);
 
 }
 
+
+}
+
+.holo-system{
+
+transition:.4s;
+
+}
+
+
+.holo-system:has(.module-card:hover){
+
+filter:
+drop-shadow(0 0 25px cyan);
+
+}
+
+.ami-center p{
+
+font-size:16px;
+
+letter-spacing:5px;
+
+margin-top:15px;
+
+color:#67e8f9;
+
+text-shadow:0 0 15px cyan;
+
+}
+
+
+/* =====================
+ JARVIS STATUS EFFECTS
+===================== */
+
+
+.holo-system.listening .ami-center h2{
+
+animation:jarvisPulse 1.2s infinite;
+
+color:#00ffff;
+
+text-shadow:
+0 0 20px cyan,
+0 0 60px cyan;
+
+}
+
+
+
+.holo-system.speaking .ami-center h2{
+
+animation:jarvisSpeak .5s infinite;
+
+color:white;
+
+text-shadow:
+0 0 30px cyan,
+0 0 90px cyan;
+
+}
+
+
+
+.holo-system.processing .ami-center h2{
+
+animation:jarvisPulse .8s infinite;
+
+color:orange;
+
+text-shadow:
+0 0 40px orange,
+0 0 80px orange;
+
+}
+
+
+
+.holo-system.executing .ami-center h2{
+
+animation:jarvisSpeak .6s infinite;
+
+color:#22ff88;
+
+text-shadow:
+0 0 40px #22ff88,
+0 0 90px #22ff88;
+
+}
+
+
+
+@keyframes jarvisPulse{
+
+50%{
+
+transform:translate(-50%,-50%) scale(1.08);
+
+}
+
+}
+
+
+
+@keyframes jarvisSpeak{
+
+50%{
+
+transform:translate(-50%,-50%) scale(1.15);
+
+}
+
+}
+
+.holo-system:not(.online){
+
+opacity:.3;
+
+filter:blur(2px);
+
+}
+
+
+.holo-system.online{
+
+animation:
+jarvisPowerOn 2s ease;
+
+}
+
+
+@keyframes jarvisPowerOn{
+
+0%{
+
+opacity:0;
+
+transform:
+translate(-50%,-50%)
+scale(.4);
+
+}
+
+
+50%{
+
+opacity:.7;
+
+transform:
+translate(-50%,-50%)
+scale(1.2);
+
+}
+
+
+100%{
+
+opacity:1;
+
+transform:
+translate(-50%,-50%)
+scale(1);
+
+}
+
+}
+
+/* =====================
+ JARVIS CORE ENERGY RINGS
+===================== */
+
+
+.core-ring{
+
+position:absolute;
+
+border-radius:50%;
+
+border:2px solid cyan;
+
+box-shadow:
+0 0 20px cyan,
+inset 0 0 20px cyan;
+
+pointer-events:none;
+
+z-index:1;
+
+}
+
+
+.ring-1{
+
+width:230px;
+height:230px;
+
+animation:
+rotateRing 8s linear infinite;
+
+}
+
+
+.ring-2{
+
+width:180px;
+height:180px;
+
+border-style:dashed;
+
+animation:
+rotateRingReverse 5s linear infinite;
+
+}
+
+
+.ring-3{
+
+width:130px;
+height:130px;
+
+border-color:#22ff88;
+
+animation:
+pulseRing 2s infinite;
+
+}
+
+
+
+.scanner-line{
+
+position:absolute;
+
+width:240px;
+
+height:2px;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+cyan,
+transparent
+);
+
+box-shadow:
+0 0 20px cyan;
+
+animation:
+scanMove 2s infinite;
+
+z-index:50;
+
+}
+
+
+
+@keyframes rotateRing{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+
+
+@keyframes rotateRingReverse{
+
+from{
+transform:rotate(360deg);
+}
+
+to{
+transform:rotate(0deg);
+}
+
+}
+
+
+
+@keyframes pulseRing{
+
+50%{
+
+transform:scale(1.15);
+
+opacity:.5;
+
+}
+
+}
+
+
+
+@keyframes scanMove{
+
+0%{
+
+transform:translateY(-100px);
+
+opacity:0;
+
+}
+
+
+50%{
+
+opacity:1;
+
+}
+
+
+100%{
+
+transform:translateY(100px);
+
+opacity:0;
+
+}
 
 }

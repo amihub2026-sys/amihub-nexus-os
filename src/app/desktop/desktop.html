@@ -4,7 +4,7 @@ class="system-boot"
 *ngIf="systemBoot">
 
 
-<h1>NEXUS OS</h1>
+<h1>JARVIS</h1>
 
 <h3>SYSTEM INITIALIZATION</h3>
 
@@ -21,9 +21,11 @@ class="boot-line"
 </div>
   <!-- Ami Hologram -->
   <div class="center hologram-container">
-    <app-ami-hologram
+   <app-ami-hologram
 
-[online]="!systemBoot"
+[online]="jarvisBoot"
+
+[jarvisStatus]="jarvisStatus"
 
 (openApp)="openHoloApp($event)"
 
@@ -97,6 +99,10 @@ class="boot-line"
 
 </app-window-manager>
 
+<app-diagnostics-panel
+*ngIf="showDiagnostics">
+</app-diagnostics-panel>
+
   <!-- SYSTEM UI -->
   <app-live-clock></app-live-clock>
   <app-notification-panel></app-notification-panel>
@@ -107,7 +113,14 @@ class="boot-line"
   <app-modules-panel></app-modules-panel>
 
   <!-- ALWAYS AVAILABLE AI ASSISTANT -->
-  <app-assistant-panel (commandSend)="executeVoiceCommand($event)"></app-assistant-panel>
+  <app-assistant-panel
+
+(commandSend)="executeVoiceCommand($event)"
+
+(statusChange)="jarvisStatusChanged($event)"
+
+>
+</app-assistant-panel>
 
   <!-- TASKBAR -->
 <!-- TASKBAR -->
